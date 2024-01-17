@@ -17,7 +17,6 @@ public class Main {
     static IQLSanPhamService iQLSanPhamService;
     static List<SanPham> lstSanPham;
     public Main() {
-        
         lstSanPham = iQLSanPhamService.getData();
     }
     
