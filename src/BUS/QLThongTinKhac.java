@@ -8,8 +8,11 @@ import DAO.INhaXuatBanRepo;
 import DAO.ITacGiaRepo;
 import DAO.NhaXuatBanRepo;
 import DAO.TacGiaRepo;
+import DAO.ITheLoaiRepo;
+import DAO.TheLoaiRepo;
 import Models.NhaXuatBan;
 import Models.TacGia;
+import Models.TheLoai;
 import ViewModels.NXBViewModel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +31,7 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     DefaultTableModel model;
     INhaXuatBanRepo iNhaXuatBanRepo;
     ITacGiaRepo iTacGiaRepo;
+    ITheLoaiRepo iTheLoaiRepo;
     List<NXBViewModel> lstNhaXuatBanView;
     NhaXuatBan nxb;
     TacGia tg;
@@ -35,6 +39,7 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     public QLThongTinKhac() {
         iNhaXuatBanRepo = new NhaXuatBanRepo();
         iTacGiaRepo = new TacGiaRepo();
+        iTheLoaiRepo = new TheLoaiRepo();
     }
 
     @Override
@@ -118,6 +123,31 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     @Override
     public List<TacGia> getDataTG() {
         return iTacGiaRepo.getAllData();
+    }
+
+    @Override
+    public boolean insert_TL(TheLoai Tl) {
+        return iTheLoaiRepo.insert(Tl);
+    }
+
+    @Override
+    public boolean update_TL(TheLoai Tl) {
+        return iTheLoaiRepo.insert(Tl);
+    }
+
+    @Override
+    public boolean delete_TL(String MaTl) {
+        return iTheLoaiRepo.delete(MaTl);
+    }
+
+    @Override
+    public List<TheLoai> findTenTL(String MaTl) {
+        return iTheLoaiRepo.findTenTG(MaTl);
+    }
+
+    @Override
+    public List<TheLoai> getDataTL() {
+        return iTheLoaiRepo.getAllData();
     }
 
 }

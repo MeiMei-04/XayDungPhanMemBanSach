@@ -6,6 +6,7 @@ package BUS;
 
 import Models.NhaXuatBan;
 import Models.TacGia;
+import Models.TheLoai;
 import ViewModels.NXBViewModel;
 import com.toedter.calendar.JDateChooser;
 import java.util.List;
@@ -41,4 +42,14 @@ public interface IQLThongTinKhac {
 
     public List<TacGia> getDataTG();
 
+    //tl
+    public boolean insert_TL(TheLoai Tl);
+
+    public boolean update_TL(TheLoai Tl);
+
+    public boolean delete_TL(String MaTl);
+
+    public List<TheLoai> findTenTL(String MaTl);
+
+    public List<TheLoai> getDataTL();
 }

@@ -11,15 +11,17 @@ package Models;
 public class TheLoai {
     private int Id_TL;
     private String Ma_TL;
+    private String TenTL;
     private String mota;
     private int TrangThai;
 
     public TheLoai() {
     }
 
-    public TheLoai(int Id_TL, String Ma_TL, String mota, int TrangThai) {
+    public TheLoai(int Id_TL, String Ma_TL, String TenTL, String mota, int TrangThai) {
         this.Id_TL = Id_TL;
         this.Ma_TL = Ma_TL;
+        this.TenTL = TenTL;
         this.mota = mota;
         this.TrangThai = TrangThai;
     }
@@ -40,6 +42,14 @@ public class TheLoai {
         this.Ma_TL = Ma_TL;
     }
 
+    public String getTenTL() {
+        return TenTL;
+    }
+
+    public void setTenTL(String TenTL) {
+        this.TenTL = TenTL;
+    }
+
     public String getMota() {
         return mota;
     }
@@ -55,5 +65,7 @@ public class TheLoai {
     public void setTrangThai(int TrangThai) {
         this.TrangThai = TrangThai;
     }
+
+    
     
 }

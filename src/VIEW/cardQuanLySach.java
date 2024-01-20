@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import ViewModels.NXBViewModel;
 import BUS.IQLThongTinKhac;
 import Models.TacGia;
+import Models.TheLoai;
 import Utilities.DiaLogMes;
 import java.util.Date;
 
@@ -28,8 +29,9 @@ public class cardQuanLySach extends javax.swing.JPanel {
     DiaLogMes diaLogMes;
     DefaultTableModel model;
     IQLThongTinKhac iQLThongTinKhac;
-    List<NhaXuatBan> lsdNhaXuatBan;
+    List<NhaXuatBan> lstNhaXuatBan;
     List<TacGia> lstTacGia;
+    List<TheLoai> lstTheLoai;
 
     /**
      * Creates new form cardQuanLySach
@@ -37,24 +39,115 @@ public class cardQuanLySach extends javax.swing.JPanel {
     public cardQuanLySach() {
         initComponents();
         iQLThongTinKhac = new QLThongTinKhac();
-        lsdNhaXuatBan = iQLThongTinKhac.getDataNXB();
+        lstNhaXuatBan = iQLThongTinKhac.getDataNXB();
         lstTacGia = iQLThongTinKhac.getDataTG();
+        lstTheLoai = iQLThongTinKhac.getDataTL();
         diaLogMes = new DiaLogMes();
         filltableNXB();
         filltableTG();
+        filltableTL();
     }
 
-    private void getDaTa() {
-        lsdNhaXuatBan = iQLThongTinKhac.getDataNXB();
-        lstTacGia = iQLThongTinKhac.getDataTG();
+    private void refreshTableTl() {
+        lstTheLoai = iQLThongTinKhac.getDataTL();
+        filltableTL();
+    }
+    private void findTenTL() {
+        String tentl = txt_TenTL.getText();
+        if (iQLThongTinKhac.findTenTL(tentl).isEmpty()) {
+            diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
+        } else {
+            lstTheLoai = iQLThongTinKhac.findTenTL(tentl);
+            filltableNXB();
+        }
     }
 
+    private void moiTL() {
+        txt_MaTl.setText("");
+        txt_TenTL.setText("");
+        txt_Mota.setText("");
+        refreshTableTl();
+    }
+
+    private void themTL() {
+        TheLoai TL = new TheLoai();
+        if (iQLThongTinKhac.insert_TL(TL)) {
+            diaLogMes.alert(this, "Thêm Thành Công");
+        } else {
+            diaLogMes.alert(this, "Thêm Thất Bại");
+        }
+    }
+
+    private void suaTL() {
+        TheLoai TL = new TheLoai();
+        if (iQLThongTinKhac.update_TL(TL)) {
+            diaLogMes.alert(this, "Sửa Thành Công");
+        } else {
+            diaLogMes.alert(this, "Sửa Thất Bại");
+        }
+    }
+
+    private void xoaTL() {
+        String maNXB = txt_MaNXB.getText();
+        if (iQLThongTinKhac.delete_NXB(maNXB)) {
+            diaLogMes.alert(this, "Xoá Thành Công");
+        } else {
+            diaLogMes.alert(this, "Xoá Thất Bại");
+        }
+    }
+
+    private void clickTblTL() {
+        int row = tbl_NXB.getSelectedRow();
+        String manxb = (String) tbl_NXB.getValueAt(row, 0);
+        String tennxb = (String) tbl_NXB.getValueAt(row, 1);
+        String diachi = (String) tbl_NXB.getValueAt(row, 2);
+        txt_MaNXB.setText(manxb);
+        txt_TenNXB.setText(tennxb);
+        txt_DiaChiNXB.setText(diachi);
+
+    }
+
+    private TheLoai getFormTL() {
+        TheLoai TL = new TheLoai();
+        try {
+            TL.setMa_TL(txt_MaTl.getText());
+            TL.setTenTL(txt_TenTL.getText());
+            TL.setMota(txt_Mota.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return TL;
+    }
+
+    private void filltableTL() {
+        model = (DefaultTableModel) tblTheLoai.getModel();
+        model.setRowCount(0);
+
+        if (lstTheLoai.isEmpty()) {
+            return;
+        }
+        for (TheLoai TL : lstTheLoai) {
+            if (TL.getTrangThai() != 2) {
+                Object[] row = {
+                    TL.getMa_TL(),
+                    TL.getTenTL(),
+                    TL.getMota(),
+                    TL.getTrangThai()
+                };
+                model.addRow(row);
+            }
+        }
+    }
+    private void refreshTableTNXB() {
+        lstNhaXuatBan = iQLThongTinKhac.getDataNXB();
+        filltableNXB();
+    }
     private void findTenNXB() {
         String tennxb = txt_TenNXB.getText();
         if (iQLThongTinKhac.findTenNXB(tennxb).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            lsdNhaXuatBan = iQLThongTinKhac.findTenNXB(tennxb);
+            lstNhaXuatBan = iQLThongTinKhac.findTenNXB(tennxb);
             filltableNXB();
         }
     }
@@ -63,8 +156,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         txt_MaNXB.setText("");
         txt_TenNXB.setText("");
         txt_DiaChiNXB.setText("");
-        getDaTa();
-        filltableNXB();
+        refreshTableTNXB();
     }
 
     private void themNXB() {
@@ -116,15 +208,15 @@ public class cardQuanLySach extends javax.swing.JPanel {
         }
         return nxb;
     }
-
+    
     private void filltableNXB() {
         model = (DefaultTableModel) tbl_NXB.getModel();
         model.setRowCount(0);
 
-        if (lsdNhaXuatBan.isEmpty()) {
+        if (lstNhaXuatBan.isEmpty()) {
             return;
         }
-        for (NhaXuatBan nxb : lsdNhaXuatBan) {
+        for (NhaXuatBan nxb : lstNhaXuatBan) {
             if (nxb.getTrangThai() != 2) {
                 Object[] row = {
                     nxb.getMa_NXB(),
@@ -136,7 +228,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
             }
         }
     }
-
+    private void refreshTableTG() {
+        lstTacGia = iQLThongTinKhac.getDataTG();
+        filltableTG();
+    }
     private void findTenTG() {
         String tentg = txt_TenTG.getText();
         if (iQLThongTinKhac.findTenTG(tentg).isEmpty()) {
@@ -152,8 +247,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         txt_TenTG.setText("");
         txt_NgaySinh.setDate(new Date());
         txt_QuocTich.setText("");
-        getDaTa();
-        filltableTG();
+        refreshTableTG();
     }
 
     private void themTG() {
@@ -676,18 +770,43 @@ public class cardQuanLySach extends javax.swing.JPanel {
         jPanel14.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_ThemTL.setText("Thêm");
+        btn_ThemTL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ThemTLActionPerformed(evt);
+            }
+        });
         jPanel14.add(btn_ThemTL);
 
         btn_SuaTL.setText("Sửa");
+        btn_SuaTL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SuaTLActionPerformed(evt);
+            }
+        });
         jPanel14.add(btn_SuaTL);
 
         btn_XoaTL.setText("Xoá");
+        btn_XoaTL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_XoaTLActionPerformed(evt);
+            }
+        });
         jPanel14.add(btn_XoaTL);
 
         btn_MoiTL.setText("Mới");
+        btn_MoiTL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_MoiTLActionPerformed(evt);
+            }
+        });
         jPanel14.add(btn_MoiTL);
 
         btn_TimTL.setText("Tìm");
+        btn_TimTL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_TimTLActionPerformed(evt);
+            }
+        });
         jPanel14.add(btn_TimTL);
 
         pnl_ThongTinTL.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 310, 30));
@@ -936,6 +1055,31 @@ public class cardQuanLySach extends javax.swing.JPanel {
         // TODO add your handling code here:
         findTenTG();
     }//GEN-LAST:event_btn_TimTGActionPerformed
+
+    private void btn_ThemTLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ThemTLActionPerformed
+        // TODO add your handling code here:
+        themTL();
+    }//GEN-LAST:event_btn_ThemTLActionPerformed
+
+    private void btn_SuaTLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SuaTLActionPerformed
+        // TODO add your handling code here:
+        suaTL();
+    }//GEN-LAST:event_btn_SuaTLActionPerformed
+
+    private void btn_XoaTLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XoaTLActionPerformed
+        // TODO add your handling code here:
+        xoaTL();
+    }//GEN-LAST:event_btn_XoaTLActionPerformed
+
+    private void btn_MoiTLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MoiTLActionPerformed
+        // TODO add your handling code here:
+        moiTL();
+    }//GEN-LAST:event_btn_MoiTLActionPerformed
+
+    private void btn_TimTLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_TimTLActionPerformed
+        // TODO add your handling code here:
+        findTenTL();
+    }//GEN-LAST:event_btn_TimTLActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
