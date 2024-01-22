@@ -17,5 +17,5 @@ public interface ITheLoaiRepo {
     public boolean delete(String TL);
     public List<TheLoai> selectBySQL(String sql, Object... args);
     public List<TheLoai> getAllData();
-    public List<TheLoai> findTenTG(String TenTL);
+    public List<TheLoai> findTenTL(String TenTL);
 }

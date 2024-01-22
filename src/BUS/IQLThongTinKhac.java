@@ -4,6 +4,7 @@
  */
 package BUS;
 
+import Models.KhuVucLuuTru;
 import Models.NhaXuatBan;
 import Models.TacGia;
 import Models.TheLoai;
@@ -49,7 +50,18 @@ public interface IQLThongTinKhac {
 
     public boolean delete_TL(String MaTl);
 
-    public List<TheLoai> findTenTL(String MaTl);
+    public List<TheLoai> findTenTL(String TenTL);
 
     public List<TheLoai> getDataTL();
+
+    //kv
+    public boolean insert_KV(KhuVucLuuTru KV);
+
+    public boolean update_KV(KhuVucLuuTru KV);
+
+    public boolean delete_KV(String MaKV);
+
+    public List<KhuVucLuuTru> findTenKV(String TenKV);
+
+    public List<KhuVucLuuTru> getDataKV();
 }

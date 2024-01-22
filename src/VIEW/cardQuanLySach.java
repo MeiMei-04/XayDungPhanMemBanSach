@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import ViewModels.NXBViewModel;
 import BUS.IQLThongTinKhac;
+import Models.KhuVucLuuTru;
 import Models.TacGia;
 import Models.TheLoai;
 import Utilities.DiaLogMes;
@@ -32,6 +33,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     List<NhaXuatBan> lstNhaXuatBan;
     List<TacGia> lstTacGia;
     List<TheLoai> lstTheLoai;
+    List<KhuVucLuuTru> lstKhuVucLuuTru;
 
     /**
      * Creates new form cardQuanLySach
@@ -42,23 +44,112 @@ public class cardQuanLySach extends javax.swing.JPanel {
         lstNhaXuatBan = iQLThongTinKhac.getDataNXB();
         lstTacGia = iQLThongTinKhac.getDataTG();
         lstTheLoai = iQLThongTinKhac.getDataTL();
+        lstKhuVucLuuTru = iQLThongTinKhac.getDataKV();
         diaLogMes = new DiaLogMes();
         filltableNXB();
         filltableTG();
         filltableTL();
+        filltableKV();
+    }
+
+    private void refreshTableKV() {
+        lstKhuVucLuuTru = iQLThongTinKhac.getDataKV();
+        filltableKV();
+    }
+
+    private void findTenKV() {
+        String tenKV = txt_TenKV.getText();
+        if (iQLThongTinKhac.findTenTL(tenKV).isEmpty()) {
+            diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
+        } else {
+            lstKhuVucLuuTru = iQLThongTinKhac.findTenKV(tenKV);
+            filltableKV();
+        }
+    }
+
+    private void moiKV() {
+        txt_MaKV.setText("");
+        txt_TenKV.setText("");
+        refreshTableKV();
+    }
+
+    private void themKV() {
+        KhuVucLuuTru kv = getFormKV();
+        if (iQLThongTinKhac.insert_KV(kv)) {
+            diaLogMes.alert(this, "Thêm Thành Công");
+        } else {
+            diaLogMes.alert(this, "Thêm Thất Bại");
+        }
+    }
+
+    private void suaKV() {
+        KhuVucLuuTru kv = getFormKV();
+        if (iQLThongTinKhac.update_KV(kv)) {
+            diaLogMes.alert(this, "Sửa Thành Công");
+        } else {
+            diaLogMes.alert(this, "Sửa Thất Bại");
+        }
+    }
+
+    private void xoaKV() {
+        String maKV = txt_MaKV.getText();
+        if (iQLThongTinKhac.delete_KV(maKV)) {
+            diaLogMes.alert(this, "Xoá Thành Công");
+        } else {
+            diaLogMes.alert(this, "Xoá Thất Bại");
+        }
+    }
+
+    private void clickTblKV() {
+        int row = tblKhuVucLT.getSelectedRow();
+        String mankv = (String) tblKhuVucLT.getValueAt(row, 0);
+        String tenkv = (String) tblKhuVucLT.getValueAt(row, 1);
+        txt_MaKV.setText(mankv);
+        txt_TenKV.setText(tenkv);
+
+    }
+
+    private KhuVucLuuTru getFormKV() {
+        KhuVucLuuTru kv = new KhuVucLuuTru();
+        try {
+            kv.setMa_KV(txt_MaKV.getText());
+            kv.setTenKV(txt_TenKV.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return kv;
+    }
+
+    private void filltableKV() {
+        model = (DefaultTableModel) tblKhuVucLT.getModel();
+        model.setRowCount(0);
+        if (lstKhuVucLuuTru.isEmpty()) {
+            return;
+        }
+        for (KhuVucLuuTru kv : lstKhuVucLuuTru) {
+            if (kv.getTrangThai() != 2) {
+                Object[] row = {
+                    kv.getMa_KV(),
+                    kv.getTenKV(),
+                    kv.getTrangThai()
+                };
+                model.addRow(row);
+            }
+        }
     }
 
     private void refreshTableTl() {
         lstTheLoai = iQLThongTinKhac.getDataTL();
         filltableTL();
     }
+
     private void findTenTL() {
         String tentl = txt_TenTL.getText();
         if (iQLThongTinKhac.findTenTL(tentl).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
             lstTheLoai = iQLThongTinKhac.findTenTL(tentl);
-            filltableNXB();
+            filltableTL();
         }
     }
 
@@ -70,7 +161,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void themTL() {
-        TheLoai TL = new TheLoai();
+        TheLoai TL = getFormTL();
         if (iQLThongTinKhac.insert_TL(TL)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
@@ -79,7 +170,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void suaTL() {
-        TheLoai TL = new TheLoai();
+        TheLoai TL = getFormTL();
         if (iQLThongTinKhac.update_TL(TL)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
@@ -88,8 +179,8 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void xoaTL() {
-        String maNXB = txt_MaNXB.getText();
-        if (iQLThongTinKhac.delete_NXB(maNXB)) {
+        String maTL = txt_MaTl.getText();
+        if (iQLThongTinKhac.delete_TL(maTL)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
@@ -97,13 +188,13 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void clickTblTL() {
-        int row = tbl_NXB.getSelectedRow();
-        String manxb = (String) tbl_NXB.getValueAt(row, 0);
-        String tennxb = (String) tbl_NXB.getValueAt(row, 1);
-        String diachi = (String) tbl_NXB.getValueAt(row, 2);
-        txt_MaNXB.setText(manxb);
-        txt_TenNXB.setText(tennxb);
-        txt_DiaChiNXB.setText(diachi);
+        int row = tblTheLoai.getSelectedRow();
+        String mantl = (String) tblTheLoai.getValueAt(row, 0);
+        String tentl = (String) tblTheLoai.getValueAt(row, 1);
+        String mota = (String) tblTheLoai.getValueAt(row, 2);
+        txt_MaTl.setText(mantl);
+        txt_TenTL.setText(tentl);
+        txt_Mota.setText(mota);
 
     }
 
@@ -138,10 +229,12 @@ public class cardQuanLySach extends javax.swing.JPanel {
             }
         }
     }
+
     private void refreshTableTNXB() {
         lstNhaXuatBan = iQLThongTinKhac.getDataNXB();
         filltableNXB();
     }
+
     private void findTenNXB() {
         String tennxb = txt_TenNXB.getText();
         if (iQLThongTinKhac.findTenNXB(tennxb).isEmpty()) {
@@ -208,7 +301,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         }
         return nxb;
     }
-    
+
     private void filltableNXB() {
         model = (DefaultTableModel) tbl_NXB.getModel();
         model.setRowCount(0);
@@ -228,10 +321,12 @@ public class cardQuanLySach extends javax.swing.JPanel {
             }
         }
     }
+
     private void refreshTableTG() {
         lstTacGia = iQLThongTinKhac.getDataTG();
         filltableTG();
     }
+
     private void findTenTG() {
         String tentg = txt_TenTG.getText();
         if (iQLThongTinKhac.findTenTG(tentg).isEmpty()) {
@@ -749,6 +844,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
             }
         ));
         tblTheLoai.setOpaque(false);
+        tblTheLoai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTheLoaiMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tblTheLoai);
 
         pnl_ThongTinTL.setOpaque(false);
@@ -849,6 +949,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
             }
         ));
         tblKhuVucLT.setOpaque(false);
+        tblKhuVucLT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKhuVucLTMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tblKhuVucLT);
 
         pnl_ThongTinKVLT.setOpaque(false);
@@ -861,18 +966,43 @@ public class cardQuanLySach extends javax.swing.JPanel {
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_ThemKV.setText("Thêm");
+        btn_ThemKV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ThemKVActionPerformed(evt);
+            }
+        });
         jPanel15.add(btn_ThemKV);
 
         btn_SuaKV.setText("Sửa");
+        btn_SuaKV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SuaKVActionPerformed(evt);
+            }
+        });
         jPanel15.add(btn_SuaKV);
 
         btn_XoaKV.setText("Xoá");
+        btn_XoaKV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_XoaKVActionPerformed(evt);
+            }
+        });
         jPanel15.add(btn_XoaKV);
 
         btn_MoiKV.setText("Mới");
+        btn_MoiKV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_MoiKVActionPerformed(evt);
+            }
+        });
         jPanel15.add(btn_MoiKV);
 
         btn_TimKV.setText("Tìm");
+        btn_TimKV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_TimKVActionPerformed(evt);
+            }
+        });
         jPanel15.add(btn_TimKV);
 
         pnl_ThongTinKVLT.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 310, 30));
@@ -1080,6 +1210,41 @@ public class cardQuanLySach extends javax.swing.JPanel {
         // TODO add your handling code here:
         findTenTL();
     }//GEN-LAST:event_btn_TimTLActionPerformed
+
+    private void tblTheLoaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTheLoaiMouseClicked
+        // TODO add your handling code here:
+        clickTblTL();
+    }//GEN-LAST:event_tblTheLoaiMouseClicked
+
+    private void btn_ThemKVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ThemKVActionPerformed
+        // TODO add your handling code here:
+        themKV();
+    }//GEN-LAST:event_btn_ThemKVActionPerformed
+
+    private void btn_SuaKVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SuaKVActionPerformed
+        // TODO add your handling code here:
+        suaKV();
+    }//GEN-LAST:event_btn_SuaKVActionPerformed
+
+    private void btn_XoaKVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XoaKVActionPerformed
+        // TODO add your handling code here:
+        xoaKV();
+    }//GEN-LAST:event_btn_XoaKVActionPerformed
+
+    private void btn_MoiKVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MoiKVActionPerformed
+        // TODO add your handling code here:
+        moiKV();
+    }//GEN-LAST:event_btn_MoiKVActionPerformed
+
+    private void btn_TimKVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_TimKVActionPerformed
+        // TODO add your handling code here:
+        filltableKV();
+    }//GEN-LAST:event_btn_TimKVActionPerformed
+
+    private void tblKhuVucLTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhuVucLTMouseClicked
+        // TODO add your handling code here:
+        clickTblKV();
+    }//GEN-LAST:event_tblKhuVucLTMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

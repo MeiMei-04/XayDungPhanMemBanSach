@@ -46,7 +46,7 @@ public class TheLoaiRepo implements ITheLoaiRepo {
     @Override
     public boolean delete(String TL) {
         try {
-            JDBCHelper.executeUpdate(update, TL);
+            JDBCHelper.executeUpdate(delete, TL);
             return true;
         } catch (Exception e) {
             return false;
@@ -81,7 +81,7 @@ public class TheLoaiRepo implements ITheLoaiRepo {
     }
 
     @Override
-    public List<TheLoai> findTenTG(String TenTL) {
+    public List<TheLoai> findTenTL(String TenTL) {
         return selectBySQL(findTenTL, TenTL);
     }
 

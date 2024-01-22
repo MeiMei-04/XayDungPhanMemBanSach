@@ -4,12 +4,15 @@
  */
 package BUS;
 
+import DAO.IKhuVucRepo;
 import DAO.INhaXuatBanRepo;
 import DAO.ITacGiaRepo;
 import DAO.NhaXuatBanRepo;
 import DAO.TacGiaRepo;
 import DAO.ITheLoaiRepo;
+import DAO.KhuVucRepo;
 import DAO.TheLoaiRepo;
+import Models.KhuVucLuuTru;
 import Models.NhaXuatBan;
 import Models.TacGia;
 import Models.TheLoai;
@@ -32,6 +35,7 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     INhaXuatBanRepo iNhaXuatBanRepo;
     ITacGiaRepo iTacGiaRepo;
     ITheLoaiRepo iTheLoaiRepo;
+    IKhuVucRepo iKhuVucRepo;
     List<NXBViewModel> lstNhaXuatBanView;
     NhaXuatBan nxb;
     TacGia tg;
@@ -40,6 +44,7 @@ public class QLThongTinKhac implements IQLThongTinKhac {
         iNhaXuatBanRepo = new NhaXuatBanRepo();
         iTacGiaRepo = new TacGiaRepo();
         iTheLoaiRepo = new TheLoaiRepo();
+        iKhuVucRepo = new KhuVucRepo();
     }
 
     @Override
@@ -141,13 +146,38 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     }
 
     @Override
-    public List<TheLoai> findTenTL(String MaTl) {
-        return iTheLoaiRepo.findTenTG(MaTl);
+    public List<TheLoai> findTenTL(String TenTL) {
+        return iTheLoaiRepo.findTenTL(TenTL);
     }
 
     @Override
     public List<TheLoai> getDataTL() {
         return iTheLoaiRepo.getAllData();
+    }
+
+    @Override
+    public boolean insert_KV(KhuVucLuuTru KV) {
+        return iKhuVucRepo.insert(KV);
+    }
+
+    @Override
+    public boolean update_KV(KhuVucLuuTru KV) {
+        return iKhuVucRepo.insert(KV);
+    }
+
+    @Override
+    public boolean delete_KV(String MaKV) {
+        return iKhuVucRepo.delete(MaKV);
+    }
+
+    @Override
+    public List<KhuVucLuuTru> findTenKV(String TenKV) {
+        return iKhuVucRepo.findTenKV(TenKV);
+    }
+
+    @Override
+    public List<KhuVucLuuTru> getDataKV() {
+        return iKhuVucRepo.getAllData();
     }
 
 }
