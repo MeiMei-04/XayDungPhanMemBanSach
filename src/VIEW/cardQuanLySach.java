@@ -16,10 +16,12 @@ import javax.swing.table.DefaultTableModel;
 import ViewModels.NXBViewModel;
 import BUS.IQLThongTinKhac;
 import Models.KhuVucLuuTru;
+import Models.NgonNguSanPham;
 import Models.TacGia;
 import Models.TheLoai;
 import Utilities.DiaLogMes;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  *
@@ -34,6 +36,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     List<TacGia> lstTacGia;
     List<TheLoai> lstTheLoai;
     List<KhuVucLuuTru> lstKhuVucLuuTru;
+    List<NgonNguSanPham> lstNgonNguSanPham;
 
     /**
      * Creates new form cardQuanLySach
@@ -45,11 +48,150 @@ public class cardQuanLySach extends javax.swing.JPanel {
         lstTacGia = iQLThongTinKhac.getDataTG();
         lstTheLoai = iQLThongTinKhac.getDataTL();
         lstKhuVucLuuTru = iQLThongTinKhac.getDataKV();
+        lstNgonNguSanPham = iQLThongTinKhac.getDataNN();
         diaLogMes = new DiaLogMes();
         filltableNXB();
         filltableTG();
         filltableTL();
         filltableKV();
+        filltableNN();
+        fillcbbTG();
+        fillcbbNXB();
+        fillcbbTL();
+        fillcbbKV();
+        fillcbbNN();
+    }
+    private void rsCbb(){
+        lstNgonNguSanPham = iQLThongTinKhac.getDataNN();
+        lstTacGia = iQLThongTinKhac.getDataTG();
+        lstKhuVucLuuTru = iQLThongTinKhac.getDataKV();
+        lstTheLoai = iQLThongTinKhac.getDataTL();
+        lstNhaXuatBan = iQLThongTinKhac.getDataNXB();
+        fillcbbTG();
+        fillcbbNXB();
+        fillcbbTL();
+        fillcbbKV();
+        fillcbbNN();
+    }
+
+    private void fillcbbKV() {
+        cbb_KVLuutru.removeAllItems();
+        for (KhuVucLuuTru kv : lstKhuVucLuuTru) {
+            cbb_KVLuutru.addItem(kv.getTenKV());
+        }
+    }
+
+    private void fillcbbTL() {
+        cbb_TL.removeAllItems();
+        for (TheLoai tl : lstTheLoai) {
+            cbb_TL.addItem(tl.getTenTL());
+        }
+    }
+
+    private void fillcbbNN() {
+        cbb_NN.removeAllItems();
+        for (NgonNguSanPham nn : lstNgonNguSanPham) {
+            cbb_NN.addItem(nn.getTenNN());
+        }
+    }
+    private void fillcbbNXB() {
+        cbb_NXB.removeAllItems();
+        for (NhaXuatBan nxb : lstNhaXuatBan) {
+            cbb_NXB.addItem(nxb.getTenNXB());
+        }
+    }
+
+    private void fillcbbTG() {
+        cbb_TacGia.removeAllItems();
+        for (TacGia tg : lstTacGia) {
+            cbb_TacGia.addItem(tg.getTenTG());
+        }
+    }
+
+    private void refreshTableNN() {
+        lstNgonNguSanPham = iQLThongTinKhac.getDataNN();
+        filltableNN();
+    }
+
+    private void findTenNN() {
+        String tenNN = txt_TenNN.getText();
+        if (iQLThongTinKhac.findTenNN(tenNN).isEmpty()) {
+            diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
+        } else {
+            lstNgonNguSanPham = iQLThongTinKhac.findTenNN(tenNN);
+            filltableNN();
+        }
+    }
+
+    private void moiNN() {
+        txt_MaNN.setText("");
+        txt_TenNN.setText("");
+        refreshTableNN();
+    }
+
+    private void themNN() {
+        NgonNguSanPham nn = getFormNN();
+        if (iQLThongTinKhac.insert_NN(nn)) {
+            diaLogMes.alert(this, "Thêm Thành Công");
+        } else {
+            diaLogMes.alert(this, "Thêm Thất Bại");
+        }
+    }
+
+    private void suaNN() {
+        NgonNguSanPham nn = getFormNN();
+        if (iQLThongTinKhac.update_NN(nn)) {
+            diaLogMes.alert(this, "Sửa Thành Công");
+        } else {
+            diaLogMes.alert(this, "Sửa Thất Bại");
+        }
+    }
+
+    private void xoaNN() {
+        String maNN = txt_MaNN.getText();
+        if (iQLThongTinKhac.delete_NN(maNN)) {
+            diaLogMes.alert(this, "Xoá Thành Công");
+        } else {
+            diaLogMes.alert(this, "Xoá Thất Bại");
+        }
+    }
+
+    private void clickTblNN() {
+        int row = tbl_NN.getSelectedRow();
+        String mannn = (String) tbl_NN.getValueAt(row, 0);
+        String tennn = (String) tbl_NN.getValueAt(row, 1);
+        txt_MaNN.setText(mannn);
+        txt_TenNN.setText(tennn);
+
+    }
+
+    private NgonNguSanPham getFormNN() {
+        NgonNguSanPham nn = new NgonNguSanPham();
+        try {
+            nn.setMa_NN(txt_MaNN.getText());
+            nn.setTenNN(txt_TenNN.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nn;
+    }
+
+    private void filltableNN() {
+        model = (DefaultTableModel) tbl_NN.getModel();
+        model.setRowCount(0);
+        if (lstNgonNguSanPham.isEmpty()) {
+            return;
+        }
+        for (NgonNguSanPham nn : lstNgonNguSanPham) {
+            if (nn.getTrangThai() != 2) {
+                Object[] row = {
+                    nn.getMa_NN(),
+                    nn.getTenNN(),
+                    nn.getTrangThai()
+                };
+                model.addRow(row);
+            }
+        }
     }
 
     private void refreshTableKV() {
@@ -525,11 +667,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        cbb_TacGia = new javax.swing.JComboBox<>();
+        cbb_NXB = new javax.swing.JComboBox<>();
+        cbb_NN = new javax.swing.JComboBox<>();
+        cbb_TL = new javax.swing.JComboBox<>();
+        cbb_KVLuutru = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -553,6 +695,12 @@ public class cardQuanLySach extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
 
         setOpaque(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -788,6 +936,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
             }
         ));
         tbl_NN.setOpaque(false);
+        tbl_NN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_NNMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbl_NN);
 
         pnl_ThongTinNN.setOpaque(false);
@@ -800,18 +953,43 @@ public class cardQuanLySach extends javax.swing.JPanel {
         jPanel13.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_ThemNN.setText("Thêm");
+        btn_ThemNN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ThemNNActionPerformed(evt);
+            }
+        });
         jPanel13.add(btn_ThemNN);
 
         btn_SuaNN.setText("Sửa");
+        btn_SuaNN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SuaNNActionPerformed(evt);
+            }
+        });
         jPanel13.add(btn_SuaNN);
 
         btn_XoaNN.setText("Xoá");
+        btn_XoaNN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_XoaNNActionPerformed(evt);
+            }
+        });
         jPanel13.add(btn_XoaNN);
 
         btn_MoiNN.setText("Mới");
+        btn_MoiNN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_MoiNNActionPerformed(evt);
+            }
+        });
         jPanel13.add(btn_MoiNN);
 
         btn_TimNN.setText("Tìm");
+        btn_TimNN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_TimNNActionPerformed(evt);
+            }
+        });
         jPanel13.add(btn_TimNN);
 
         pnl_ThongTinNN.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 310, 30));
@@ -1153,24 +1331,22 @@ public class cardQuanLySach extends javax.swing.JPanel {
         ));
         jScrollPane9.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 226, 1070, 381));
+        jPanel2.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 297, 1070, 310));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 0, 200, -1));
+        cbb_TacGia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel2.add(cbb_TacGia, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 200, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 35, 200, -1));
+        cbb_NXB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel2.add(cbb_NXB, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 200, -1));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 70, 200, -1));
+        cbb_NN.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel2.add(cbb_NN, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 200, -1));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 105, 200, -1));
+        cbb_TL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel2.add(cbb_TL, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 200, -1));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 140, 200, -1));
-
-        jTextField1.setText("jTextField1");
+        cbb_KVLuutru.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel2.add(cbb_KVLuutru, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 200, -1));
         jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 0, 200, -1));
 
         jLabel17.setText("Mã Sách");
@@ -1178,8 +1354,6 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
         jLabel18.setText("Tên Sách");
         jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 38, -1, -1));
-
-        jTextField2.setText("jTextField1");
         jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 35, 200, -1));
         jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 70, 200, -1));
 
@@ -1192,20 +1366,14 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
         jLabel21.setText("Giá");
         jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 143, -1, -1));
-
-        jTextField3.setText("jTextField1");
         jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 140, 200, -1));
 
         jLabel22.setText("Phân Đoạn");
         jPanel2.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(624, 3, -1, -1));
-
-        jTextField4.setText("jTextField1");
         jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(711, 0, 200, -1));
 
         jLabel23.setText("Số trang");
         jPanel2.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(624, 38, -1, -1));
-
-        jTextField5.setText("jTextField1");
         jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(711, 35, 200, -1));
 
         jLabel24.setText("Mô Tả");
@@ -1217,9 +1385,9 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
         jPanel2.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(711, 76, 200, -1));
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Mới");
         jPanel1.add(jButton1);
 
         jButton2.setText("jButton2");
@@ -1234,7 +1402,25 @@ public class cardQuanLySach extends javax.swing.JPanel {
         jButton3.setText("jButton3");
         jPanel1.add(jButton3);
 
+        jButton6.setText("jButton6");
+        jPanel1.add(jButton6);
+
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 180, 390, 39));
+
+        jLabel25.setText("Tác Giả");
+        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, -1));
+
+        jLabel26.setText("Nhà Xuất Bản");
+        jPanel2.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+
+        jLabel27.setText("Ngôn Ngữ");
+        jPanel2.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        jLabel28.setText("Thể Loại");
+        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+
+        jLabel29.setText("Khu Vực Lưu Trữ");
+        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
 
         jTabbedPane1.addTab("Sách", jPanel2);
 
@@ -1362,6 +1548,36 @@ public class cardQuanLySach extends javax.swing.JPanel {
         clickTblKV();
     }//GEN-LAST:event_tblKhuVucLTMouseClicked
 
+    private void btn_ThemNNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ThemNNActionPerformed
+        // TODO add your handling code here:
+        themNN();
+    }//GEN-LAST:event_btn_ThemNNActionPerformed
+
+    private void btn_SuaNNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SuaNNActionPerformed
+        // TODO add your handling code here:
+        suaNN();
+    }//GEN-LAST:event_btn_SuaNNActionPerformed
+
+    private void btn_XoaNNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XoaNNActionPerformed
+        // TODO add your handling code here:
+        xoaNN();
+    }//GEN-LAST:event_btn_XoaNNActionPerformed
+
+    private void btn_MoiNNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MoiNNActionPerformed
+        // TODO add your handling code here:
+        moiNN();
+    }//GEN-LAST:event_btn_MoiNNActionPerformed
+
+    private void btn_TimNNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_TimNNActionPerformed
+        // TODO add your handling code here:
+        findTenNN();
+    }//GEN-LAST:event_btn_TimNNActionPerformed
+
+    private void tbl_NNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_NNMouseClicked
+        // TODO add your handling code here:
+        clickTblNN();
+    }//GEN-LAST:event_tbl_NNMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_ChonANh;
@@ -1395,17 +1611,18 @@ public class cardQuanLySach extends javax.swing.JPanel {
     private javax.swing.JButton btn_XoaTG;
     private javax.swing.JButton btn_XoaTL;
     private javax.swing.JButton btn__SuaTG;
+    private javax.swing.JComboBox<String> cbb_KVLuutru;
+    private javax.swing.JComboBox<String> cbb_NN;
+    private javax.swing.JComboBox<String> cbb_NXB;
     private javax.swing.JComboBox<String> cbb_Sach;
+    private javax.swing.JComboBox<String> cbb_TL;
+    private javax.swing.JComboBox<String> cbb_TacGia;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
+    private javax.swing.JButton jButton6;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1424,6 +1641,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

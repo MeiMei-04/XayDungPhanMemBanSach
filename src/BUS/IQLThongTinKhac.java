@@ -5,6 +5,7 @@
 package BUS;
 
 import Models.KhuVucLuuTru;
+import Models.NgonNguSanPham;
 import Models.NhaXuatBan;
 import Models.TacGia;
 import Models.TheLoai;
@@ -64,4 +65,15 @@ public interface IQLThongTinKhac {
     public List<KhuVucLuuTru> findTenKV(String TenKV);
 
     public List<KhuVucLuuTru> getDataKV();
+
+    //nn
+    public boolean insert_NN(NgonNguSanPham NN);
+
+    public boolean update_NN(NgonNguSanPham NN);
+
+    public boolean delete_NN(String maNN);
+
+    public List<NgonNguSanPham> findTenNN(String TenNN);
+
+    public List<NgonNguSanPham> getDataNN();
 }

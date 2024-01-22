@@ -11,16 +11,16 @@ package Models;
 public class NgonNguSanPham {
     private int Id_NN;
     private String Ma_NN;
-    private String TenKV;
+    private String TenNN;
     private int TrangThai;
 
     public NgonNguSanPham() {
     }
 
-    public NgonNguSanPham(int Id_NN, String Ma_NN, String TenKV, int TrangThai) {
+    public NgonNguSanPham(int Id_NN, String Ma_NN, String TenNN, int TrangThai) {
         this.Id_NN = Id_NN;
         this.Ma_NN = Ma_NN;
-        this.TenKV = TenKV;
+        this.TenNN = TenNN;
         this.TrangThai = TrangThai;
     }
 
@@ -40,12 +40,12 @@ public class NgonNguSanPham {
         this.Ma_NN = Ma_NN;
     }
 
-    public String getTenKV() {
-        return TenKV;
+    public String getTenNN() {
+        return TenNN;
     }
 
-    public void setTenKV(String TenKV) {
-        this.TenKV = TenKV;
+    public void setTenNN(String TenNN) {
+        this.TenNN = TenNN;
     }
 
     public int getTrangThai() {
@@ -55,5 +55,6 @@ public class NgonNguSanPham {
     public void setTrangThai(int TrangThai) {
         this.TrangThai = TrangThai;
     }
+
     
 }

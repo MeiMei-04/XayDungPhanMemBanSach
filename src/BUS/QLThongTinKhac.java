@@ -5,14 +5,17 @@
 package BUS;
 
 import DAO.IKhuVucRepo;
+import DAO.INgonNguSanPhamRepo;
 import DAO.INhaXuatBanRepo;
 import DAO.ITacGiaRepo;
 import DAO.NhaXuatBanRepo;
 import DAO.TacGiaRepo;
 import DAO.ITheLoaiRepo;
 import DAO.KhuVucRepo;
+import DAO.NgonNguSanPhamRepo;
 import DAO.TheLoaiRepo;
 import Models.KhuVucLuuTru;
+import Models.NgonNguSanPham;
 import Models.NhaXuatBan;
 import Models.TacGia;
 import Models.TheLoai;
@@ -36,6 +39,7 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     ITacGiaRepo iTacGiaRepo;
     ITheLoaiRepo iTheLoaiRepo;
     IKhuVucRepo iKhuVucRepo;
+    INgonNguSanPhamRepo iNgonNguSanPhamRepo;
     List<NXBViewModel> lstNhaXuatBanView;
     NhaXuatBan nxb;
     TacGia tg;
@@ -45,6 +49,7 @@ public class QLThongTinKhac implements IQLThongTinKhac {
         iTacGiaRepo = new TacGiaRepo();
         iTheLoaiRepo = new TheLoaiRepo();
         iKhuVucRepo = new KhuVucRepo();
+        iNgonNguSanPhamRepo = new NgonNguSanPhamRepo();
     }
 
     @Override
@@ -178,6 +183,31 @@ public class QLThongTinKhac implements IQLThongTinKhac {
     @Override
     public List<KhuVucLuuTru> getDataKV() {
         return iKhuVucRepo.getAllData();
+    }
+
+    @Override
+    public boolean insert_NN(NgonNguSanPham NN) {
+        return iNgonNguSanPhamRepo.insert(NN);
+    }
+
+    @Override
+    public boolean update_NN(NgonNguSanPham NN) {
+        return iNgonNguSanPhamRepo.update(NN);
+    }
+
+    @Override
+    public boolean delete_NN(String maNN) {
+        return iNgonNguSanPhamRepo.delete(maNN);
+    }
+
+    @Override
+    public List<NgonNguSanPham> findTenNN(String TenNN) {
+        return iNgonNguSanPhamRepo.findTenKV(TenNN);
+    }
+
+    @Override
+    public List<NgonNguSanPham> getDataNN() {
+        return iNgonNguSanPhamRepo.getAllData();
     }
 
 }
