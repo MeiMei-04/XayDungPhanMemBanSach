@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Hieu
  */
-public class QLThongTinKhac implements IQLThongTinKhac {
+public class QLThongTinKhac implements IQLThongTinKhacServie {
 
     DefaultTableModel model;
     INhaXuatBanRepo iNhaXuatBanRepo;

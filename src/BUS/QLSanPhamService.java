@@ -4,9 +4,12 @@
  */
 package BUS;
 
+import DAO.ISachRepo;
 import DAO.ISanPhamRepo;
+import DAO.SachRepo;
 import DAO.SanPhamRepo;
 import Models.SanPham;
+import ViewModels.SachViewModel;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -14,25 +17,15 @@ import java.util.List;
  * @author Hieu
  */
 public class QLSanPhamService implements IQLSanPhamService{
-//  Là Nơi Gọi Đến Các Service Ở Tầng DAO 
-//  Không Được Phép Gọi Trực Tiếp Các File Ở Class Các Tầng
-//  Phải Gọi Thông quá interface
-    ISanPhamRepo iSanPhamRepo;
-    List<SanPham> lstSanPham;
+    ISachRepo iSachRepo;
     public QLSanPhamService() {
-        iSanPhamRepo = new SanPhamRepo();
-        lstSanPham = iSanPhamRepo.getData();
-    }
-    @Override
-    public String addSanPham(){
-        iSanPhamRepo.insert();
-        System.out.println(iSanPhamRepo.insert());
-        return "Thêm Thành Công";
+        iSachRepo = new SachRepo();
     }
 
-    @Override
-    public List<SanPham> getData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
+    @Override
+    public List<SachViewModel> getData() {
+        return iSachRepo.getAllData();
+    }
+
 }

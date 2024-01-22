@@ -5,6 +5,7 @@
 package BUS;
 
 import Models.SanPham;
+import ViewModels.SachViewModel;
 import java.util.List;
 
 /**
@@ -16,7 +17,6 @@ public interface IQLSanPhamService {
 //  Trong interface Mặc Đinh là public không thể sử dụng private;
 //  Hiểu đơn giản interface là phần xác mà chưa có hồn
     
-    public String addSanPham();
-    public List<SanPham> getData();
+    public List<SachViewModel> getData();
     
 }
