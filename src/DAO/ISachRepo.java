@@ -12,6 +12,6 @@ import java.util.List;
  * @author Hieu
  */
 public interface ISachRepo {
-    public List<SachViewModel> selectBySQL(String sql, String[] cols, Object... args);
+    public List<SachViewModel> selectBySQL(String sql, Object... args);
     public List<SachViewModel> getAllData();
 }

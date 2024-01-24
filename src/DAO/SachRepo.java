@@ -44,51 +44,43 @@ public class SachRepo implements ISachRepo {
     String col[] = {"ID", "MaSach", "TenSach", "NamXuatBan", "SoLuong", "Gia", "PhanDoan", "SoTrang", "MoTa", "NgonNgu", "TheLoai", "NhaXuatBan", "TacGia", "KhuVucLuuTru", "TrangThai"};
 
     @Override
-    public List<SachViewModel> selectBySQL(String sql, String[] cols, Object... args) {
-        int stt = 1;
+    public List<SachViewModel> selectBySQL(String sql, Object... args) {
         List<SachViewModel> listSVM = new ArrayList<>();
-        List<Object[]> list = new ArrayList<>();
+        int stt = 1;
         try {
-            ResultSet rs = JDBCHelper.executeQuery(sql, args);
+                 ResultSet rs = JDBCHelper.executeQuery(sql, args); 
             while (rs.next()) {
-                Object[] vals = new Object[cols.length];
-                for (int i = 0; i < cols.length; i++) {
-                    vals[i] = rs.getObject(cols[i]);
-                }
-                list.add(vals);
+                SachViewModel svm = new SachViewModel();
+                svm.setsTT(stt++);
+                svm.setId_Sach(rs.getInt(1));
+                svm.setMaSach(rs.getString(2));
+                svm.setTenSach(rs.getString(3));
+                svm.setNamXuatBan(rs.getInt(4));
+                svm.setSoLuong(rs.getInt(5));
+                svm.setGia(rs.getInt(6));
+                svm.setPhandoan(rs.getString(7));
+                svm.setSoTrang(rs.getInt(8));
+                svm.setMota(rs.getString(9));
+                svm.setNgonNgu(rs.getString(10));
+                svm.setTheLoai(rs.getString(11));
+                svm.setNhaXuatBan(rs.getString(12));
+                svm.setTacGia(rs.getString(13));
+                svm.setKvLuuTru(rs.getString(14));
+                svm.setTrangThai(rs.getInt(15));
+                listSVM.add(svm);
             }
             rs.getStatement().getConnection().close();
+            return listSVM;
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-        for (Object[] obj : list) {
-            SachViewModel svm = new SachViewModel();
-            svm.setsTT(stt);
-            svm.setId_Sach(Integer.parseInt(obj[0].toString()));
-            svm.setMaSach(obj[1].toString());
-            svm.setTenSach(obj[2].toString());
-            svm.setNamXuatBan(Integer.parseInt(obj[3].toString()));
-            svm.setSoLuong(Integer.parseInt(obj[4].toString()));
-            svm.setGia(Integer.parseInt(obj[5].toString()));
-            svm.setPhandoan(obj[6].toString());
-            svm.setSoTrang(Integer.parseInt(obj[7].toString()));
-            svm.setMota(obj[8].toString());
-            svm.setNgonNgu(obj[9].toString());
-            svm.setTheLoai(obj[10].toString());
-            svm.setNamXuatBan(Integer.parseInt(obj[11].toString()));
-            svm.setTacGia(obj[12].toString());
-            svm.setKvLuuTru(obj[13].toString());
-            svm.setTrangThai(Integer.parseInt(obj[14].toString()));
-            listSVM.add(svm);
-            stt++;
-        }
-        return listSVM;
+
     }
 
     @Override
     public List<SachViewModel> getAllData() {
-        return selectBySQL(read,col);
+        return selectBySQL(read);
     }
 
 }

@@ -128,7 +128,6 @@ public class MainForm extends javax.swing.JFrame {
         lbl_HoaDon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1280, 760));
         setResizable(false);
 
         pnl_Bg.setBackground(new java.awt.Color(255, 255, 255));
@@ -139,7 +138,6 @@ public class MainForm extends javax.swing.JFrame {
 
         pnl_logo.setBackground(new java.awt.Color(255, 255, 255));
 
-        lbl_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo_main.png"))); // NOI18N
         lbl_logo.setText("LoGo");
 
         javax.swing.GroupLayout pnl_logoLayout = new javax.swing.GroupLayout(pnl_logo);
@@ -176,7 +174,6 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         lbl_TrangChu.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbl_TrangChu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/homeMain.png"))); // NOI18N
         lbl_TrangChu.setText("Trang Chủ");
 
         javax.swing.GroupLayout pnl_TrangChuLayout = new javax.swing.GroupLayout(pnl_TrangChu);
@@ -202,7 +199,6 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         lbl_BanHang.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbl_BanHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/homeMain.png"))); // NOI18N
         lbl_BanHang.setText("Bán Hàng");
 
         javax.swing.GroupLayout pnl_BanHangLayout = new javax.swing.GroupLayout(pnl_BanHang);
@@ -228,7 +224,6 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         lbl_QuanLySach.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbl_QuanLySach.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/homeMain.png"))); // NOI18N
         lbl_QuanLySach.setText("Quản Lý Sách");
 
         javax.swing.GroupLayout pnl_QuanLySachLayout = new javax.swing.GroupLayout(pnl_QuanLySach);
@@ -254,7 +249,6 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         lbl_NhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbl_NhanVien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/homeMain.png"))); // NOI18N
         lbl_NhanVien.setText("Nhân Viên");
 
         javax.swing.GroupLayout pnl_NhanVienLayout = new javax.swing.GroupLayout(pnl_NhanVien);
@@ -280,7 +274,6 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         lbl_KhachHang.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbl_KhachHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/homeMain.png"))); // NOI18N
         lbl_KhachHang.setText("Khách Hàng");
 
         javax.swing.GroupLayout pnl_KhachHangLayout = new javax.swing.GroupLayout(pnl_KhachHang);
@@ -306,7 +299,6 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         lbl_HoaDon.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        lbl_HoaDon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/homeMain.png"))); // NOI18N
         lbl_HoaDon.setText("Hoá Đơn");
 
         javax.swing.GroupLayout pnl_HoaDonLayout = new javax.swing.GroupLayout(pnl_HoaDon);

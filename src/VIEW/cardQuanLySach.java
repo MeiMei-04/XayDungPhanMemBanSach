@@ -25,6 +25,7 @@ import java.util.HashSet;
 import BUS.IQLThongTinKhacServie;
 import BUS.QLSanPhamService;
 import ViewModels.SachViewModel;
+import java.util.ArrayList;
 
 /**
  *
@@ -36,12 +37,12 @@ public class cardQuanLySach extends javax.swing.JPanel {
     DefaultTableModel model;
     IQLThongTinKhacServie iQLThongTinKhacService;
     IQLSanPhamService iQLSanPhamService;
-    List<NhaXuatBan> lstNhaXuatBan;
-    List<TacGia> lstTacGia;
-    List<TheLoai> lstTheLoai;
-    List<KhuVucLuuTru> lstKhuVucLuuTru;
-    List<NgonNguSanPham> lstNgonNguSanPham;
-    List<SachViewModel> lstSachViewModel;
+    List<NhaXuatBan> _lstNhaXuatBan;
+    List<TacGia> _lstTacGia;
+    List<TheLoai> _lstTheLoai;
+    List<KhuVucLuuTru> _lstKhuVucLuuTru;
+    List<NgonNguSanPham> _lstNgonNguSanPham;
+    List<SachViewModel> _lstSachViewModel;
 
     /**
      * Creates new form cardQuanLySach
@@ -50,12 +51,18 @@ public class cardQuanLySach extends javax.swing.JPanel {
         initComponents();
         iQLThongTinKhacService = new QLThongTinKhac();
         iQLSanPhamService = new QLSanPhamService();
-        lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
-        lstTacGia = iQLThongTinKhacService.getDataTG();
-        lstTheLoai = iQLThongTinKhacService.getDataTL();
-        lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
-        lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
-        lstSachViewModel = iQLSanPhamService.getData();
+        _lstNhaXuatBan = new ArrayList<>();
+        _lstTacGia = new ArrayList<>();
+        _lstTheLoai = new ArrayList<>();
+        _lstKhuVucLuuTru = new ArrayList<>();
+        _lstNgonNguSanPham = new ArrayList<>();
+        _lstSachViewModel = new ArrayList<>();
+        _lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
+        _lstTacGia = iQLThongTinKhacService.getDataTG();
+        _lstTheLoai = iQLThongTinKhacService.getDataTL();
+        _lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
+        _lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
+        _lstSachViewModel = iQLSanPhamService.getData();
         diaLogMes = new DiaLogMes();
         filltableNXB();
         filltableTG();
@@ -70,11 +77,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
         filltableSach();
     }
     private void rsCbb(){
-        lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
-        lstTacGia = iQLThongTinKhacService.getDataTG();
-        lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
-        lstTheLoai = iQLThongTinKhacService.getDataTL();
-        lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
+        _lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
+        _lstTacGia = iQLThongTinKhacService.getDataTG();
+        _lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
+        _lstTheLoai = iQLThongTinKhacService.getDataTL();
+        _lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
         fillcbbTG();
         fillcbbNXB();
         fillcbbTL();
@@ -84,10 +91,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
     private void filltableSach() {
         model = (DefaultTableModel) tblSach.getModel();
         model.setRowCount(0);
-        if (lstSachViewModel.isEmpty()) {
+        if (_lstSachViewModel.isEmpty()) {
             return;
         }
-        for (SachViewModel svm : lstSachViewModel) {
+        for (SachViewModel svm : _lstSachViewModel) {
             if (svm.getTrangThai() != 2) {
                 Object[] row = {
                     svm.getsTT(),
@@ -112,40 +119,40 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
     private void fillcbbKV() {
         cbb_KVLuutru.removeAllItems();
-        for (KhuVucLuuTru kv : lstKhuVucLuuTru) {
+        for (KhuVucLuuTru kv : _lstKhuVucLuuTru) {
             cbb_KVLuutru.addItem(kv.getTenKV());
         }
     }
 
     private void fillcbbTL() {
         cbb_TL.removeAllItems();
-        for (TheLoai tl : lstTheLoai) {
+        for (TheLoai tl : _lstTheLoai) {
             cbb_TL.addItem(tl.getTenTL());
         }
     }
 
     private void fillcbbNN() {
         cbb_NN.removeAllItems();
-        for (NgonNguSanPham nn : lstNgonNguSanPham) {
+        for (NgonNguSanPham nn : _lstNgonNguSanPham) {
             cbb_NN.addItem(nn.getTenNN());
         }
     }
     private void fillcbbNXB() {
         cbb_NXB.removeAllItems();
-        for (NhaXuatBan nxb : lstNhaXuatBan) {
+        for (NhaXuatBan nxb : _lstNhaXuatBan) {
             cbb_NXB.addItem(nxb.getTenNXB());
         }
     }
 
     private void fillcbbTG() {
         cbb_TacGia.removeAllItems();
-        for (TacGia tg : lstTacGia) {
+        for (TacGia tg : _lstTacGia) {
             cbb_TacGia.addItem(tg.getTenTG());
         }
     }
 
     private void refreshTableNN() {
-        lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
+        _lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
         filltableNN();
     }
 
@@ -154,7 +161,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         if (iQLThongTinKhacService.findTenNN(tenNN).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            lstNgonNguSanPham = iQLThongTinKhacService.findTenNN(tenNN);
+            _lstNgonNguSanPham = iQLThongTinKhacService.findTenNN(tenNN);
             filltableNN();
         }
     }
@@ -215,10 +222,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
     private void filltableNN() {
         model = (DefaultTableModel) tbl_NN.getModel();
         model.setRowCount(0);
-        if (lstNgonNguSanPham.isEmpty()) {
+        if (_lstNgonNguSanPham.isEmpty()) {
             return;
         }
-        for (NgonNguSanPham nn : lstNgonNguSanPham) {
+        for (NgonNguSanPham nn : _lstNgonNguSanPham) {
             if (nn.getTrangThai() != 2) {
                 Object[] row = {
                     nn.getMa_NN(),
@@ -231,7 +238,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableKV() {
-        lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
+        _lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
         filltableKV();
     }
 
@@ -240,7 +247,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         if (iQLThongTinKhacService.findTenTL(tenKV).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            lstKhuVucLuuTru = iQLThongTinKhacService.findTenKV(tenKV);
+            _lstKhuVucLuuTru = iQLThongTinKhacService.findTenKV(tenKV);
             filltableKV();
         }
     }
@@ -301,10 +308,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
     private void filltableKV() {
         model = (DefaultTableModel) tblKhuVucLT.getModel();
         model.setRowCount(0);
-        if (lstKhuVucLuuTru.isEmpty()) {
+        if (_lstKhuVucLuuTru.isEmpty()) {
             return;
         }
-        for (KhuVucLuuTru kv : lstKhuVucLuuTru) {
+        for (KhuVucLuuTru kv : _lstKhuVucLuuTru) {
             if (kv.getTrangThai() != 2) {
                 Object[] row = {
                     kv.getMa_KV(),
@@ -317,7 +324,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableTl() {
-        lstTheLoai = iQLThongTinKhacService.getDataTL();
+        _lstTheLoai = iQLThongTinKhacService.getDataTL();
         filltableTL();
     }
 
@@ -326,7 +333,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         if (iQLThongTinKhacService.findTenTL(tentl).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            lstTheLoai = iQLThongTinKhacService.findTenTL(tentl);
+            _lstTheLoai = iQLThongTinKhacService.findTenTL(tentl);
             filltableTL();
         }
     }
@@ -392,10 +399,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
         model = (DefaultTableModel) tblTheLoai.getModel();
         model.setRowCount(0);
 
-        if (lstTheLoai.isEmpty()) {
+        if (_lstTheLoai.isEmpty()) {
             return;
         }
-        for (TheLoai TL : lstTheLoai) {
+        for (TheLoai TL : _lstTheLoai) {
             if (TL.getTrangThai() != 2) {
                 Object[] row = {
                     TL.getMa_TL(),
@@ -409,7 +416,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableTNXB() {
-        lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
+        _lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
         filltableNXB();
     }
 
@@ -418,7 +425,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         if (iQLThongTinKhacService.findTenNXB(tennxb).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            lstNhaXuatBan = iQLThongTinKhacService.findTenNXB(tennxb);
+            _lstNhaXuatBan = iQLThongTinKhacService.findTenNXB(tennxb);
             filltableNXB();
         }
     }
@@ -484,10 +491,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
         model = (DefaultTableModel) tbl_NXB.getModel();
         model.setRowCount(0);
 
-        if (lstNhaXuatBan.isEmpty()) {
+        if (_lstNhaXuatBan.isEmpty()) {
             return;
         }
-        for (NhaXuatBan nxb : lstNhaXuatBan) {
+        for (NhaXuatBan nxb : _lstNhaXuatBan) {
             if (nxb.getTrangThai() != 2) {
                 Object[] row = {
                     nxb.getMa_NXB(),
@@ -501,7 +508,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableTG() {
-        lstTacGia = iQLThongTinKhacService.getDataTG();
+        _lstTacGia = iQLThongTinKhacService.getDataTG();
         filltableTG();
     }
 
@@ -510,7 +517,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         if (iQLThongTinKhacService.findTenTG(tentg).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            lstTacGia = iQLThongTinKhacService.findTenTG(tentg);
+            _lstTacGia = iQLThongTinKhacService.findTenTG(tentg);
             filltableTG();
         }
     }
@@ -578,10 +585,10 @@ public class cardQuanLySach extends javax.swing.JPanel {
         model = (DefaultTableModel) tbl_TacGia.getModel();
         model.setRowCount(0);
 
-        if (lstTacGia.isEmpty()) {
+        if (_lstTacGia.isEmpty()) {
             return;
         }
-        for (TacGia tg : lstTacGia) {
+        for (TacGia tg : _lstTacGia) {
             if (tg.getTrangThai() != 2) {
                 Object[] row = {
                     tg.getMa_TG(),
