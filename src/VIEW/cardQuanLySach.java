@@ -65,7 +65,6 @@ public class cardQuanLySach extends javax.swing.JPanel {
         _lstSachViewModel = iQLSanPhamService.getData();
         diaLogMes = new DiaLogMes();
         filltableNXB();
-        filltableTG();
         filltableTL();
         filltableKV();
         filltableNN();
@@ -507,100 +506,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
         }
     }
 
-    private void refreshTableTG() {
-        _lstTacGia = iQLThongTinKhacService.getDataTG();
-        filltableTG();
-    }
-
-    private void findTenTG() {
-        String tentg = txt_TenTG.getText();
-        if (iQLThongTinKhacService.findTenTG(tentg).isEmpty()) {
-            diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
-        } else {
-            _lstTacGia = iQLThongTinKhacService.findTenTG(tentg);
-            filltableTG();
-        }
-    }
-
-    private void moiTG() {
-        txt_MaTG.setText("");
-        txt_TenTG.setText("");
-        txt_NgaySinh.setDate(new Date());
-        txt_QuocTich.setText("");
-        refreshTableTG();
-    }
-
-    private void themTG() {
-        TacGia tg = getFormTG();
-        if (iQLThongTinKhacService.insert_TG(tg)) {
-            diaLogMes.alert(this, "Thêm Thành Công");
-        } else {
-            diaLogMes.alert(this, "Thêm Thất Bại");
-        }
-    }
-
-    private void suaTG() {
-        TacGia tg = getFormTG();
-        if (iQLThongTinKhacService.update_TG(tg)) {
-            diaLogMes.alert(this, "Sửa Thành Công");
-        } else {
-            diaLogMes.alert(this, "Sửa Thất Bại");
-        }
-    }
-
-    private void xoaTG() {
-        String maTG = txt_MaTG.getText();
-        if (iQLThongTinKhacService.delete_TG(maTG)) {
-            diaLogMes.alert(this, "Xoá Thành Công");
-        } else {
-            diaLogMes.alert(this, "Xoá Thất Bại");
-        }
-    }
-
-    private void clickTblTG() {
-        int row = tbl_TacGia.getSelectedRow();
-        String mantg = (String) tbl_TacGia.getValueAt(row, 0);
-        String tentg = (String) tbl_TacGia.getValueAt(row, 1);
-        Date ngaySinh = (Date) tbl_TacGia.getValueAt(row, 2);
-        String quocTich = (String) tbl_TacGia.getValueAt(row, 3);
-        txt_MaTG.setText(mantg);
-        txt_TenTG.setText(tentg);
-        txt_NgaySinh.setDate(ngaySinh);
-        txt_QuocTich.setText(quocTich);
-    }
-
-    private TacGia getFormTG() {
-        TacGia tg = new TacGia();
-        try {
-            tg.setTenTG(txt_TenTG.getText());
-            tg.setNgaySinh(txt_NgaySinh.getDate());
-            tg.setQuocTich(txt_QuocTich.getText());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return tg;
-    }
-
-    private void filltableTG() {
-        model = (DefaultTableModel) tbl_TacGia.getModel();
-        model.setRowCount(0);
-
-        if (_lstTacGia.isEmpty()) {
-            return;
-        }
-        for (TacGia tg : _lstTacGia) {
-            if (tg.getTrangThai() != 2) {
-                Object[] row = {
-                    tg.getMa_TG(),
-                    tg.getTenTG(),
-                    tg.getNgaySinh(),
-                    tg.getQuocTich(),
-                    tg.getTrangThai()
-                };
-                model.addRow(row);
-            }
-        }
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
