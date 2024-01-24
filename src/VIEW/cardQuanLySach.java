@@ -23,6 +23,7 @@ import Utilities.DiaLogMes;
 import java.util.Date;
 import java.util.HashSet;
 import BUS.IQLThongTinKhacServie;
+import BUS.IQLThuocTinhSachService;
 import BUS.QLSanPhamService;
 import ViewModels.SachViewModel;
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     DiaLogMes diaLogMes;
     DefaultTableModel model;
-    IQLThongTinKhacServie iQLThongTinKhacService;
-    IQLSanPhamService iQLSanPhamService;
+    IQLThuocTinhSachService _iQLThuocTinhSachService;
+    IQLSanPhamService _iQLSanPhamService;
     List<NhaXuatBan> _lstNhaXuatBan;
     List<TacGia> _lstTacGia;
     List<TheLoai> _lstTheLoai;
@@ -49,20 +50,20 @@ public class cardQuanLySach extends javax.swing.JPanel {
      */
     public cardQuanLySach() {
         initComponents();
-        iQLThongTinKhacService = new QLThongTinKhac();
-        iQLSanPhamService = new QLSanPhamService();
+        _iQLThuocTinhSachService = new QLThongTinKhac();
+        _iQLSanPhamService = new QLSanPhamService();
         _lstNhaXuatBan = new ArrayList<>();
         _lstTacGia = new ArrayList<>();
         _lstTheLoai = new ArrayList<>();
         _lstKhuVucLuuTru = new ArrayList<>();
         _lstNgonNguSanPham = new ArrayList<>();
         _lstSachViewModel = new ArrayList<>();
-        _lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
-        _lstTacGia = iQLThongTinKhacService.getDataTG();
-        _lstTheLoai = iQLThongTinKhacService.getDataTL();
-        _lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
-        _lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
-        _lstSachViewModel = iQLSanPhamService.getData();
+        _lstNhaXuatBan = _iQLThuocTinhSachService.getDataNXB();
+        _lstTacGia = _iQLThuocTinhSachService.getDataTG();
+        _lstTheLoai = _iQLThuocTinhSachService.getDataTL();
+        _lstKhuVucLuuTru = _iQLThuocTinhSachService.getDataKV();
+        _lstNgonNguSanPham = _iQLThuocTinhSachService.getDataNN();
+        _lstSachViewModel = _iQLSanPhamService.getData();
         diaLogMes = new DiaLogMes();
         filltableNXB();
         filltableTG();
@@ -77,11 +78,11 @@ public class cardQuanLySach extends javax.swing.JPanel {
         filltableSach();
     }
     private void rsCbb(){
-        _lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
-        _lstTacGia = iQLThongTinKhacService.getDataTG();
-        _lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
-        _lstTheLoai = iQLThongTinKhacService.getDataTL();
-        _lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
+        _lstNgonNguSanPham = _iQLThuocTinhSachService.getDataNN();
+        _lstTacGia = _iQLThuocTinhSachService.getDataTG();
+        _lstKhuVucLuuTru = _iQLThuocTinhSachService.getDataKV();
+        _lstTheLoai = _iQLThuocTinhSachService.getDataTL();
+        _lstNhaXuatBan = _iQLThuocTinhSachService.getDataNXB();
         fillcbbTG();
         fillcbbNXB();
         fillcbbTL();
@@ -152,16 +153,16 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableNN() {
-        _lstNgonNguSanPham = iQLThongTinKhacService.getDataNN();
+        _lstNgonNguSanPham = _iQLThuocTinhSachService.getDataNN();
         filltableNN();
     }
 
     private void findTenNN() {
         String tenNN = txt_TenNN.getText();
-        if (iQLThongTinKhacService.findTenNN(tenNN).isEmpty()) {
+        if (_iQLThuocTinhSachService.findTenNN(tenNN).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            _lstNgonNguSanPham = iQLThongTinKhacService.findTenNN(tenNN);
+            _lstNgonNguSanPham = _iQLThuocTinhSachService.findTenNN(tenNN);
             filltableNN();
         }
     }
@@ -174,7 +175,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void themNN() {
         NgonNguSanPham nn = getFormNN();
-        if (iQLThongTinKhacService.insert_NN(nn)) {
+        if (_iQLThuocTinhSachService.insert_NN(nn)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
             diaLogMes.alert(this, "Thêm Thất Bại");
@@ -183,7 +184,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void suaNN() {
         NgonNguSanPham nn = getFormNN();
-        if (iQLThongTinKhacService.update_NN(nn)) {
+        if (_iQLThuocTinhSachService.update_NN(nn)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
             diaLogMes.alert(this, "Sửa Thất Bại");
@@ -192,7 +193,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void xoaNN() {
         String maNN = txt_MaNN.getText();
-        if (iQLThongTinKhacService.delete_NN(maNN)) {
+        if (_iQLThuocTinhSachService.delete_NN(maNN)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
@@ -238,16 +239,16 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableKV() {
-        _lstKhuVucLuuTru = iQLThongTinKhacService.getDataKV();
+        _lstKhuVucLuuTru = _iQLThuocTinhSachService.getDataKV();
         filltableKV();
     }
 
     private void findTenKV() {
         String tenKV = txt_TenKV.getText();
-        if (iQLThongTinKhacService.findTenTL(tenKV).isEmpty()) {
+        if (_iQLThuocTinhSachService.findTenTL(tenKV).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            _lstKhuVucLuuTru = iQLThongTinKhacService.findTenKV(tenKV);
+            _lstKhuVucLuuTru = _iQLThuocTinhSachService.findTenKV(tenKV);
             filltableKV();
         }
     }
@@ -260,7 +261,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void themKV() {
         KhuVucLuuTru kv = getFormKV();
-        if (iQLThongTinKhacService.insert_KV(kv)) {
+        if (_iQLThuocTinhSachService.insert_KV(kv)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
             diaLogMes.alert(this, "Thêm Thất Bại");
@@ -269,7 +270,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void suaKV() {
         KhuVucLuuTru kv = getFormKV();
-        if (iQLThongTinKhacService.update_KV(kv)) {
+        if (_iQLThuocTinhSachService.update_KV(kv)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
             diaLogMes.alert(this, "Sửa Thất Bại");
@@ -278,7 +279,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void xoaKV() {
         String maKV = txt_MaKV.getText();
-        if (iQLThongTinKhacService.delete_KV(maKV)) {
+        if (_iQLThuocTinhSachService.delete_KV(maKV)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
@@ -324,16 +325,16 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableTl() {
-        _lstTheLoai = iQLThongTinKhacService.getDataTL();
+        _lstTheLoai = _iQLThuocTinhSachService.getDataTL();
         filltableTL();
     }
 
     private void findTenTL() {
         String tentl = txt_TenTL.getText();
-        if (iQLThongTinKhacService.findTenTL(tentl).isEmpty()) {
+        if (_iQLThuocTinhSachService.findTenTL(tentl).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            _lstTheLoai = iQLThongTinKhacService.findTenTL(tentl);
+            _lstTheLoai = _iQLThuocTinhSachService.findTenTL(tentl);
             filltableTL();
         }
     }
@@ -347,7 +348,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void themTL() {
         TheLoai TL = getFormTL();
-        if (iQLThongTinKhacService.insert_TL(TL)) {
+        if (_iQLThuocTinhSachService.insert_TL(TL)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
             diaLogMes.alert(this, "Thêm Thất Bại");
@@ -356,7 +357,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void suaTL() {
         TheLoai TL = getFormTL();
-        if (iQLThongTinKhacService.update_TL(TL)) {
+        if (_iQLThuocTinhSachService.update_TL(TL)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
             diaLogMes.alert(this, "Sửa Thất Bại");
@@ -365,7 +366,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void xoaTL() {
         String maTL = txt_MaTl.getText();
-        if (iQLThongTinKhacService.delete_TL(maTL)) {
+        if (_iQLThuocTinhSachService.delete_TL(maTL)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
@@ -416,16 +417,16 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableTNXB() {
-        _lstNhaXuatBan = iQLThongTinKhacService.getDataNXB();
+        _lstNhaXuatBan = _iQLThuocTinhSachService.getDataNXB();
         filltableNXB();
     }
 
     private void findTenNXB() {
         String tennxb = txt_TenNXB.getText();
-        if (iQLThongTinKhacService.findTenNXB(tennxb).isEmpty()) {
+        if (_iQLThuocTinhSachService.findTenNXB(tennxb).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            _lstNhaXuatBan = iQLThongTinKhacService.findTenNXB(tennxb);
+            _lstNhaXuatBan = _iQLThuocTinhSachService.findTenNXB(tennxb);
             filltableNXB();
         }
     }
@@ -439,7 +440,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void themNXB() {
         NhaXuatBan nxb = getFormNXB();
-        if (iQLThongTinKhacService.insert_NXB(nxb)) {
+        if (_iQLThuocTinhSachService.insert_NXB(nxb)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
             diaLogMes.alert(this, "Thêm Thất Bại");
@@ -448,7 +449,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void suaNXB() {
         NhaXuatBan nxb = getFormNXB();
-        if (iQLThongTinKhacService.update_NXB(nxb)) {
+        if (_iQLThuocTinhSachService.update_NXB(nxb)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
             diaLogMes.alert(this, "Sửa Thất Bại");
@@ -457,7 +458,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void xoaNXB() {
         String maNXB = txt_MaNXB.getText();
-        if (iQLThongTinKhacService.delete_NXB(maNXB)) {
+        if (_iQLThuocTinhSachService.delete_NXB(maNXB)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
@@ -508,16 +509,16 @@ public class cardQuanLySach extends javax.swing.JPanel {
     }
 
     private void refreshTableTG() {
-        _lstTacGia = iQLThongTinKhacService.getDataTG();
+        _lstTacGia = _iQLThuocTinhSachService.getDataTG();
         filltableTG();
     }
 
     private void findTenTG() {
         String tentg = txt_TenTG.getText();
-        if (iQLThongTinKhacService.findTenTG(tentg).isEmpty()) {
+        if (_iQLThuocTinhSachService.findTenTG(tentg).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            _lstTacGia = iQLThongTinKhacService.findTenTG(tentg);
+            _lstTacGia = _iQLThuocTinhSachService.findTenTG(tentg);
             filltableTG();
         }
     }
@@ -532,7 +533,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void themTG() {
         TacGia tg = getFormTG();
-        if (iQLThongTinKhacService.insert_TG(tg)) {
+        if (_iQLThuocTinhSachService.insert_TG(tg)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
             diaLogMes.alert(this, "Thêm Thất Bại");
@@ -541,7 +542,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void suaTG() {
         TacGia tg = getFormTG();
-        if (iQLThongTinKhacService.update_TG(tg)) {
+        if (_iQLThuocTinhSachService.update_TG(tg)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
             diaLogMes.alert(this, "Sửa Thất Bại");
@@ -550,7 +551,7 @@ public class cardQuanLySach extends javax.swing.JPanel {
 
     private void xoaTG() {
         String maTG = txt_MaTG.getText();
-        if (iQLThongTinKhacService.delete_TG(maTG)) {
+        if (_iQLThuocTinhSachService.delete_TG(maTG)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
