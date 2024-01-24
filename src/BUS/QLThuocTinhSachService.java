@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Hieu
  */
-public class QLThongTinKhac implements IQLThongTinKhacServie {
+public class QLThuocTinhSachService implements IQLThuocTinhSachService {
 
     DefaultTableModel model;
     INhaXuatBanRepo iNhaXuatBanRepo;
@@ -44,7 +44,7 @@ public class QLThongTinKhac implements IQLThongTinKhacServie {
     NhaXuatBan nxb;
     TacGia tg;
 
-    public QLThongTinKhac() {
+    public QLThuocTinhSachService() {
         iNhaXuatBanRepo = new NhaXuatBanRepo();
         iTacGiaRepo = new TacGiaRepo();
         iTheLoaiRepo = new TheLoaiRepo();
