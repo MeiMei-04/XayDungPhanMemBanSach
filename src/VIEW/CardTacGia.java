@@ -5,51 +5,54 @@
 package VIEW;
 
 import BUS.IQLSanPhamService;
-import BUS.IQLThongTinKhacServie;
 import BUS.QLSanPhamService;
-import BUS.QLThongTinKhac;
+import BUS.QLThuocTinhSachService;
 import Models.TacGia;
 import Utilities.DiaLogMes;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import BUS.IQLThuocTinhSachService;
 
 /**
  *
  * @author HieuCute
  */
-public class jDialogTacGia extends javax.swing.JDialog {
+public class CardTacGia extends javax.swing.JDialog {
 
     DiaLogMes diaLogMes;
     DefaultTableModel model;
-    IQLThongTinKhacServie _iQLThongTinKhacService;
+    IQLThuocTinhSachService _iQLThuocTinhSachService;
     IQLSanPhamService _iQLSanPhamService;
     List<TacGia> _lstTacGia;
 
     /**
      * Creates new form jDialogTacGia
      */
-    public jDialogTacGia(java.awt.Frame parent, boolean modal) {
+    public CardTacGia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        _iQLThongTinKhacService = new QLThongTinKhac();
+        setLocationRelativeTo(null);
+        _iQLThuocTinhSachService = new QLThuocTinhSachService();
         _iQLSanPhamService = new QLSanPhamService();
         _lstTacGia = new ArrayList<>();
-        _lstTacGia = _iQLThongTinKhacService.getDataTG();
+        diaLogMes = new DiaLogMes();
+        _lstTacGia = _iQLThuocTinhSachService.getDataTG();
+        filltableTG();
     }
 
     private void refreshTableTG() {
-        _lstTacGia = _iQLThongTinKhacService.getDataTG();
+        _lstTacGia = _iQLThuocTinhSachService.getDataTG();
         filltableTG();
     }
 
     private void findTenTG() {
         String tentg = txt_TenTG.getText();
-        if (_iQLThongTinKhacService.findTenTG(tentg).isEmpty()) {
+        if (_iQLThuocTinhSachService.findTenTG(tentg).isEmpty()) {
             diaLogMes.alert(this, "Thông Tin Hiện Tại Không Khả Dụng");
         } else {
-            _lstTacGia = _iQLThongTinKhacService.findTenTG(tentg);
+            _lstTacGia = _iQLThuocTinhSachService.findTenTG(tentg);
             filltableTG();
         }
     }
@@ -64,7 +67,7 @@ public class jDialogTacGia extends javax.swing.JDialog {
 
     private void themTG() {
         TacGia tg = getFormTG();
-        if (_iQLThongTinKhacService.insert_TG(tg)) {
+        if (_iQLThuocTinhSachService.insert_TG(tg)) {
             diaLogMes.alert(this, "Thêm Thành Công");
         } else {
             diaLogMes.alert(this, "Thêm Thất Bại");
@@ -73,7 +76,7 @@ public class jDialogTacGia extends javax.swing.JDialog {
 
     private void suaTG() {
         TacGia tg = getFormTG();
-        if (_iQLThongTinKhacService.update_TG(tg)) {
+        if (_iQLThuocTinhSachService.update_TG(tg)) {
             diaLogMes.alert(this, "Sửa Thành Công");
         } else {
             diaLogMes.alert(this, "Sửa Thất Bại");
@@ -82,7 +85,7 @@ public class jDialogTacGia extends javax.swing.JDialog {
 
     private void xoaTG() {
         String maTG = txt_MaTG.getText();
-        if (_iQLThongTinKhacService.delete_TG(maTG)) {
+        if (_iQLThuocTinhSachService.delete_TG(maTG)) {
             diaLogMes.alert(this, "Xoá Thành Công");
         } else {
             diaLogMes.alert(this, "Xoá Thất Bại");
@@ -116,13 +119,14 @@ public class jDialogTacGia extends javax.swing.JDialog {
     private void filltableTG() {
         model = (DefaultTableModel) tbl_TacGia.getModel();
         model.setRowCount(0);
-
+        int stt = 1;
         if (_lstTacGia.isEmpty()) {
             return;
         }
         for (TacGia tg : _lstTacGia) {
             if (tg.getTrangThai() != 2) {
                 Object[] row = {
+                    stt,
                     tg.getMa_TG(),
                     tg.getTenTG(),
                     tg.getNgaySinh(),
@@ -130,6 +134,7 @@ public class jDialogTacGia extends javax.swing.JDialog {
                     tg.getTrangThai()
                 };
                 model.addRow(row);
+                stt++;
             }
         }
     }
@@ -163,19 +168,20 @@ public class jDialogTacGia extends javax.swing.JDialog {
         btn_TimTG = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         pnl_TacGIa.setBorder(javax.swing.BorderFactory.createTitledBorder("Tác Giả"));
         pnl_TacGIa.setOpaque(false);
 
         tbl_TacGia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã TG", "Tên TG", "Ngày Sinh", "Quốc Tịch", "Trạng Thái"
+                "Stt", "Mã TG", "Tên TG", "Ngày Sinh", "Quốc Tịch", "Trạng Thái"
             }
         ));
         tbl_TacGia.setOpaque(false);
@@ -207,7 +213,7 @@ public class jDialogTacGia extends javax.swing.JDialog {
         jLabel9.setText("Mã TG");
         pnl_ThongTinTacGia.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
-        jPanel11.setLayout(new java.awt.GridLayout());
+        jPanel11.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_ThemTG.setText("Thêm");
         btn_ThemTG.addActionListener(new java.awt.event.ActionListener() {
@@ -324,44 +330,7 @@ public class jDialogTacGia extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jDialogTacGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jDialogTacGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jDialogTacGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jDialogTacGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                jDialogTacGia dialog = new jDialogTacGia(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_MoiTG;
