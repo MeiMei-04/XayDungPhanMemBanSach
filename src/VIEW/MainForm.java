@@ -36,7 +36,7 @@ public class MainForm extends javax.swing.JFrame {
     }
     private void openQuanLySach(){
         try {
-            showFrom(new cardQuanLySach());
+            showFrom(new CardQuanLySach());
         } catch (Exception e) {
         }
     }
