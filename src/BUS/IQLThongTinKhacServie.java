@@ -20,7 +20,7 @@ import javax.swing.JTextField;
  *
  * @author Hieu
  */
-public interface IQLThuocTinhSachService {
+public interface IQLThongTinKhacServie {
 
     //nxb
     public boolean insert_NXB(NhaXuatBan nxb);
