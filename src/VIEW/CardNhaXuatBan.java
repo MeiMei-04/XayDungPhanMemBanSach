@@ -92,9 +92,9 @@ public class CardNhaXuatBan extends javax.swing.JDialog {
 
     private void clickTblNXB() {
         int row = tbl_NXB.getSelectedRow();
-        String manxb = (String) tbl_NXB.getValueAt(row, 0);
-        String tennxb = (String) tbl_NXB.getValueAt(row, 1);
-        String diachi = (String) tbl_NXB.getValueAt(row, 2);
+        String manxb = (String) tbl_NXB.getValueAt(row, 1);
+        String tennxb = (String) tbl_NXB.getValueAt(row, 2);
+        String diachi = (String) tbl_NXB.getValueAt(row, 3);
         txt_MaNXB.setText(manxb);
         txt_TenNXB.setText(tennxb);
         txt_DiaChiNXB.setText(diachi);
@@ -121,17 +121,15 @@ public class CardNhaXuatBan extends javax.swing.JDialog {
             return;
         }
         for (NhaXuatBan nxb : _lstNhaXuatBan) {
-            if (nxb.getTrangThai() != 2) {
                 Object[] row = {
                     stt,
                     nxb.getMa_NXB(),
                     nxb.getTenNXB(),
                     nxb.getDiaChiNXB(),
-                    nxb.getTrangThai()
+                    nxb.TrangThaiString()
                 };
                 model.addRow(row);
                 stt++;
-            }
         }
     }
 

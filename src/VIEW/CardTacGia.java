@@ -94,10 +94,10 @@ public class CardTacGia extends javax.swing.JDialog {
 
     private void clickTblTG() {
         int row = tbl_TacGia.getSelectedRow();
-        String mantg = (String) tbl_TacGia.getValueAt(row, 0);
-        String tentg = (String) tbl_TacGia.getValueAt(row, 1);
-        Date ngaySinh = (Date) tbl_TacGia.getValueAt(row, 2);
-        String quocTich = (String) tbl_TacGia.getValueAt(row, 3);
+        String mantg = (String) tbl_TacGia.getValueAt(row, 1);
+        String tentg = (String) tbl_TacGia.getValueAt(row, 2);
+        Date ngaySinh = (Date) tbl_TacGia.getValueAt(row, 3);
+        String quocTich = (String) tbl_TacGia.getValueAt(row, 4);
         txt_MaTG.setText(mantg);
         txt_TenTG.setText(tentg);
         txt_NgaySinh.setDate(ngaySinh);
@@ -124,18 +124,16 @@ public class CardTacGia extends javax.swing.JDialog {
             return;
         }
         for (TacGia tg : _lstTacGia) {
-            if (tg.getTrangThai() != 2) {
                 Object[] row = {
                     stt,
                     tg.getMa_TG(),
                     tg.getTenTG(),
                     tg.getNgaySinh(),
                     tg.getQuocTich(),
-                    tg.getTrangThai()
+                    tg.TrangThaiString()
                 };
                 model.addRow(row);
                 stt++;
-            }
         }
     }
 

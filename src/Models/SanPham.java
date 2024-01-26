@@ -37,5 +37,4 @@ public class SanPham {
     public void setTensp(String tensp) {
         this.tensp = tensp;
     }
-    
 }

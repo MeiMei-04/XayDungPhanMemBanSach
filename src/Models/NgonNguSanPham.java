@@ -55,6 +55,14 @@ public class NgonNguSanPham {
     public void setTrangThai(int TrangThai) {
         this.TrangThai = TrangThai;
     }
-
+    public String TrangThaiString(){
+        String TrangThaiString = null;
+        if(TrangThai == 2){
+            TrangThaiString = "Đã Xoá";
+        }else if(TrangThai == 1){
+            TrangThaiString = "Còn Tồn Tại";
+        }
+        return TrangThaiString;
+    }
     
 }

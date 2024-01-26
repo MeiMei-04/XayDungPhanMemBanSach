@@ -89,8 +89,8 @@ public class CardNgonNgu extends javax.swing.JDialog {
 
     private void clickTblNN() {
         int row = tbl_NN.getSelectedRow();
-        String mannn = (String) tbl_NN.getValueAt(row, 0);
-        String tennn = (String) tbl_NN.getValueAt(row, 1);
+        String mannn = (String) tbl_NN.getValueAt(row, 1);
+        String tennn = (String) tbl_NN.getValueAt(row, 2);
         txt_MaNN.setText(mannn);
         txt_TenNN.setText(tennn);
 
@@ -115,16 +115,14 @@ public class CardNgonNgu extends javax.swing.JDialog {
             return;
         }
         for (NgonNguSanPham nn : _lstNgonNguSanPham) {
-            if (nn.getTrangThai() != 2) {
                 Object[] row = {
                     stt,
                     nn.getMa_NN(),
                     nn.getTenNN(),
-                    nn.getTrangThai()
+                    nn.TrangThaiString()
                 };
                 model.addRow(row);
                 stt++;
-            }
         }
     }
     /**

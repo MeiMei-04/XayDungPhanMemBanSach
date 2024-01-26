@@ -9,16 +9,17 @@ package Models;
  * @author Hieu
  */
 public class TheLoaiSach {
+
     private int Id_TLS;
     private int Id_Sach;
     private int Id_TL;
     private String Ma_TLS;
-    private String TrangThai;
+    private int TrangThai;
 
     public TheLoaiSach() {
     }
 
-    public TheLoaiSach(int Id_TLS, int Id_Sach, int Id_TL, String Ma_TLS, String TrangThai) {
+    public TheLoaiSach(int Id_TLS, int Id_Sach, int Id_TL, String Ma_TLS, int TrangThai) {
         this.Id_TLS = Id_TLS;
         this.Id_Sach = Id_Sach;
         this.Id_TL = Id_TL;
@@ -58,12 +59,22 @@ public class TheLoaiSach {
         this.Ma_TLS = Ma_TLS;
     }
 
-    public String getTrangThai() {
+    public int getTrangThai() {
         return TrangThai;
     }
 
-    public void setTrangThai(String TrangThai) {
+    public void setTrangThai(int TrangThai) {
         this.TrangThai = TrangThai;
     }
-    
+
+
+    public String TrangThaiString() {
+        String TrangThaiString = null;
+        if (TrangThai == 2) {
+            TrangThaiString = "Đã Xoá";
+        } else if (TrangThai == 1) {
+            TrangThaiString = "Còn Tồn Tại";
+        }
+        return TrangThaiString;
+    }
 }

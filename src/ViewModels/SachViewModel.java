@@ -10,13 +10,11 @@ package ViewModels;
  */
 public class SachViewModel {
     private int sTT;
-    private int id_Sach;
     private String maSach;
     private String tenSach;
     private int namXuatBan;
     private int soLuong;
     private int gia;
-    private String phandoan;
     private int soTrang;
     private String mota;
     private String ngonNgu;
@@ -29,15 +27,13 @@ public class SachViewModel {
     public SachViewModel() {
     }
 
-    public SachViewModel(int sTT, int id_Sach, String maSach, String tenSach, int namXuatBan, int soLuong, int gia, String phandoan, int soTrang, String mota, String ngonNgu, String theLoai, String nhaXuatBan, String tacGia, String kvLuuTru, int trangThai) {
+    public SachViewModel(int sTT, String maSach, String tenSach, int namXuatBan, int soLuong, int gia, int soTrang, String mota, String ngonNgu, String theLoai, String nhaXuatBan, String tacGia, String kvLuuTru, int trangThai) {
         this.sTT = sTT;
-        this.id_Sach = id_Sach;
         this.maSach = maSach;
         this.tenSach = tenSach;
         this.namXuatBan = namXuatBan;
         this.soLuong = soLuong;
         this.gia = gia;
-        this.phandoan = phandoan;
         this.soTrang = soTrang;
         this.mota = mota;
         this.ngonNgu = ngonNgu;
@@ -54,14 +50,6 @@ public class SachViewModel {
 
     public void setsTT(int sTT) {
         this.sTT = sTT;
-    }
-
-    public int getId_Sach() {
-        return id_Sach;
-    }
-
-    public void setId_Sach(int id_Sach) {
-        this.id_Sach = id_Sach;
     }
 
     public String getMaSach() {
@@ -102,14 +90,6 @@ public class SachViewModel {
 
     public void setGia(int gia) {
         this.gia = gia;
-    }
-
-    public String getPhandoan() {
-        return phandoan;
-    }
-
-    public void setPhandoan(String phandoan) {
-        this.phandoan = phandoan;
     }
 
     public int getSoTrang() {
@@ -174,6 +154,17 @@ public class SachViewModel {
 
     public void setTrangThai(int trangThai) {
         this.trangThai = trangThai;
+    }
+    public String TrangThaiString() {
+        String TrangThaiString = null;
+        if (trangThai == 2) {
+            TrangThaiString = "Đã Xoá";
+        } else if (trangThai == 1) {
+            TrangThaiString = "Còn Hàng";
+        }else if(trangThai == 3){
+            TrangThaiString = "Hết Hàng";
+        }
+        return TrangThaiString;
     }
     
     

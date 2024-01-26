@@ -89,9 +89,9 @@ public class CardTheLoai extends javax.swing.JDialog {
 
     private void clickTblTL() {
         int row = tblTheLoai.getSelectedRow();
-        String mantl = (String) tblTheLoai.getValueAt(row, 0);
-        String tentl = (String) tblTheLoai.getValueAt(row, 1);
-        String mota = (String) tblTheLoai.getValueAt(row, 2);
+        String mantl = (String) tblTheLoai.getValueAt(row, 1);
+        String tentl = (String) tblTheLoai.getValueAt(row, 2);
+        String mota = (String) tblTheLoai.getValueAt(row, 3);
         txt_MaTl.setText(mantl);
         txt_TenTL.setText(tentl);
         txt_Mota.setText(mota);
@@ -118,17 +118,15 @@ public class CardTheLoai extends javax.swing.JDialog {
             return;
         }
         for (TheLoai TL : _lstTheLoai) {
-            if (TL.getTrangThai() != 2) {
                 Object[] row = {
                     stt,
                     TL.getMa_TL(),
                     TL.getTenTL(),
                     TL.getMota(),
-                    TL.getTrangThai()
+                    TL.TrangThaiString()
                 };
                 model.addRow(row);
                 stt++;
-            }
         }
     }
     /**
@@ -166,13 +164,13 @@ public class CardTheLoai extends javax.swing.JDialog {
 
         tblTheLoai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Mã TL", "Tên TL", "Mô Tả", "Trạng Thái"
+                "Stt", "Mã TL", "Tên TL", "Mô Tả", "Trạng Thái"
             }
         ));
         tblTheLoai.setOpaque(false);

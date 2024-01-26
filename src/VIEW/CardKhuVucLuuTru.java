@@ -88,8 +88,8 @@ public class CardKhuVucLuuTru extends javax.swing.JDialog {
 
     private void clickTblKV() {
         int row = tblKhuVucLT.getSelectedRow();
-        String mankv = (String) tblKhuVucLT.getValueAt(row, 0);
-        String tenkv = (String) tblKhuVucLT.getValueAt(row, 1);
+        String mankv = (String) tblKhuVucLT.getValueAt(row, 1);
+        String tenkv = (String) tblKhuVucLT.getValueAt(row, 2);
         txt_MaKV.setText(mankv);
         txt_TenKV.setText(tenkv);
 
@@ -119,7 +119,7 @@ public class CardKhuVucLuuTru extends javax.swing.JDialog {
                     stt,
                     kv.getMa_KV(),
                     kv.getTenKV(),
-                    kv.getTrangThai()
+                    kv.TrangThaiString()
                 };
                 model.addRow(row);
                 stt++;

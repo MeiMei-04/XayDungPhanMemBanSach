@@ -17,7 +17,6 @@ public class HoaDon {
     private String Ma_HD;
     private String TenNguoiMua;
     private String SDTNguoiMua;
-    private String DiaChiNhanHang;
     private Date NgayTao;
     private Date NgayThanhToan;
     private int TongTienGoc;
@@ -27,14 +26,13 @@ public class HoaDon {
     public HoaDon() {
     }
 
-    public HoaDon(int Id_HD, int Id_TK, int Id_KH, String Ma_HD, String TenNguoiMua, String SDTNguoiMua, String DiaChiNhanHang, Date NgayTao, Date NgayThanhToan, int TongTienGoc, int TongTienSauGiamGia, int TrangThai) {
+    public HoaDon(int Id_HD, int Id_TK, int Id_KH, String Ma_HD, String TenNguoiMua, String SDTNguoiMua, Date NgayTao, Date NgayThanhToan, int TongTienGoc, int TongTienSauGiamGia, int TrangThai) {
         this.Id_HD = Id_HD;
         this.Id_TK = Id_TK;
         this.Id_KH = Id_KH;
         this.Ma_HD = Ma_HD;
         this.TenNguoiMua = TenNguoiMua;
         this.SDTNguoiMua = SDTNguoiMua;
-        this.DiaChiNhanHang = DiaChiNhanHang;
         this.NgayTao = NgayTao;
         this.NgayThanhToan = NgayThanhToan;
         this.TongTienGoc = TongTienGoc;
@@ -90,14 +88,6 @@ public class HoaDon {
         this.SDTNguoiMua = SDTNguoiMua;
     }
 
-    public String getDiaChiNhanHang() {
-        return DiaChiNhanHang;
-    }
-
-    public void setDiaChiNhanHang(String DiaChiNhanHang) {
-        this.DiaChiNhanHang = DiaChiNhanHang;
-    }
-
     public Date getNgayTao() {
         return NgayTao;
     }
@@ -137,5 +127,15 @@ public class HoaDon {
     public void setTrangThai(int TrangThai) {
         this.TrangThai = TrangThai;
     }
+    public String TrangThaiString(){
+        String TrangThaiString = null;
+        if(TrangThai == 2){
+            TrangThaiString = "Đã Xoá";
+        }else if(TrangThai == 1){
+            TrangThaiString = "Còn Tồn Tại";
+        }
+        return TrangThaiString;
+    }
+    
     
 }
