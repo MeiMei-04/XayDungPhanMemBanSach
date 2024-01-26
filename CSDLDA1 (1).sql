@@ -4,14 +4,14 @@ use QuanLyBanSach
 -- Tạo Bảng Chức Vụ
 Create Table ChucVu(
 	ID_CV int identity(1,1) primary key not null,
-	MA_CV uniqueidentifier default newid() not null,
+	MA_CV as 'CV' + cast(ID_CV as nvarchar(5)) persisted,
 	TenCV nvarchar(50) not null,
 	TrangThai int not null
 );
 -- Tạo Bảng Tài Khoản
 Create Table TaiKhoan(
     ID_TK int IDENTITY(1,1) PRIMARY KEY NOT NULL,
-	Ma_TK uniqueidentifier default newid() not null,
+	Ma_TK as 'TK' + cast(ID_TK as nvarchar(5)) persisted,
     ID_CV INT not NULL,
     TaiKhoan varchar(50) not null,
     MatKhau VARCHAR(50) not null,
@@ -26,7 +26,7 @@ Create Table TaiKhoan(
 -- Tạo Bảng Thể Loại
 CREATE TABLE TheLoai(
     ID_TL int IDENTITY(1,1) primary KEY not NULL,
-	Ma_TL uniqueidentifier default newid() not null,
+	Ma_TL as 'TL' + cast(ID_TL as nvarchar(5)) persisted,
 	TenTL Nvarchar(50) not null,
     Mota NVARCHAR(255) null,
     TrangThai int not null
@@ -34,7 +34,7 @@ CREATE TABLE TheLoai(
 -- Tạo Bảng Tác Giả
 CREATE TABLE TacGia(
     id_TG int IDENTITY(1,1) primary KEY not null,
-	Ma_TG uniqueidentifier default newid() not null,
+	Ma_TG as 'TG' + cast(ID_TG as nvarchar(5)) persisted,
     TenTG NVARCHAR(50) not null,
     NgaySinh Date null,
     QuocTich NVARCHAR(50) null,
@@ -43,7 +43,7 @@ CREATE TABLE TacGia(
 -- Tạo Bảng Nhà Xuất Bản
 CREATE TABLE NhaXuatBan(
     ID_NXB int IDENTITY(1,1) primary key not null,
-	Ma_NXB uniqueidentifier default newid() not null,
+	Ma_NXB as 'NXB' + cast(ID_NXB as nvarchar(5)) persisted,
     TenNXB NVARCHAR(50) not null,
     DiaChiNXB NVARCHAR(255) null,
     TrangThai int not null
@@ -51,21 +51,21 @@ CREATE TABLE NhaXuatBan(
 --Tạo Bảng Khu vực Lưu Trữ
 CREATE TABLE KhuVucLuuTru(
     ID_KV int IDENTITY(1,1) PRIMARY KEY not null,
-	Ma_KV uniqueidentifier default newid() not null,
+	Ma_KV as 'KV' + cast(ID_KV as nvarchar(5)) persisted,
     TenKV NVARCHAR(50) not null,
     TrangThai int Not NULL
 );
 --Tạo bảng NGôn Ngữ Sản Phẩm
 CREATE TABLE NgonNguSanPham(
     ID_NN int IDENTITY(1,1) PRIMARY KEY Not null,
-	Ma_NN uniqueidentifier default newid() not null,
+	Ma_NN as 'NN' + cast(ID_NN as nvarchar(5)) persisted,
     TenNN nvarchar(50) not null,
     TrangThai int not null
 );
 --Tạo bảng khách hàng;
 CREATE TABLE KhachHang(
     ID_KH int IDENTITY(1,1) PRIMARY KEY not null,
-	Ma_KH uniqueidentifier default newid() not null,
+	Ma_KH as 'KH' + cast(ID_KH as nvarchar(5)) persisted,
     TenKH NVARCHAR(50) not null,
     SDT nvarchar(15) null,
     DiaChi NVARCHAR(255) null,
@@ -91,10 +91,9 @@ Create TABLE HoaDon(
     ID_Hd int IDENTITY(1,1) PRIMARY KEY not null,
     ID_TK int not null,
     ID_Kh int not null,
-	Ma_HD uniqueidentifier default newid() not null,
+	Ma_HD as 'HD' + cast(ID_HD as nvarchar(5)) persisted,
     TenNguoiMua NVARCHAR(50) not null,
     SDTNguoiMua varchar(15) not null,
-    DiaChiNhanHang NVARCHAR(255) not null,
     NgayTao DATETIME not null,
     NgayThanhToan DATETIME not null,
     TongTienGoc int not null,
@@ -118,22 +117,25 @@ CREATE TABLE Sach(
     ID_Sach int IDENTITY(1,1) PRIMARY KEY not null,
     ID_KV int not null,
     ID_NXB int not null,
-	Ma_SACH uniqueidentifier default newid() not null,
+	ID_TG int not null,
+	ID_TL int not null,
+	Ma_SACH as 'SACH' + cast(ID_Sach as nvarchar(5)) persisted,
     TenSach NVARCHAR(255) not null,
     NamSanXuat int not null,
     SoLuongSanPham int not null,
     GiaSanPham int not null,
-    PhanDoan NVARCHAR(50) null,
     SoTrang int Not null,
     MoTa NVARCHAR(255) not null,
     TrangThai int not null,
 	FOREIGN KEY (ID_KV) REFERENCES KhuVucLuuTru(ID_KV),
-    FOREIGN KEY (ID_NXB) REFERENCES NhaXuatBan(ID_NXB)
+    FOREIGN KEY (ID_NXB) REFERENCES NhaXuatBan(ID_NXB),
+	FOREIGN KEY (ID_TG) REFERENCES TacGia(ID_TG),
+	FOREIGN KEY (ID_TL) REFERENCES TheLoai(ID_TL)
 );
 -- Tạo Bảng Ảnh
 CREATE TABLE AnhSach(
     id_Anh int IDENTITY(1,1) PRIMARY KEY not null,
-	MA_ANH uniqueidentifier default newid() not null,
+	MA_ANH as 'ANH' + cast(id_anh as nvarchar(5)) persisted,
     id_Sach int not null,
     TenAnh varchar(50) not null,
     TrangThai int not null,
@@ -142,7 +144,7 @@ CREATE TABLE AnhSach(
 --Tạo Bảng Chi Tiết Hoá Đơn
 CREATE TABLE ChitietHoaDon(
     ID_CTHD int IDENTITY(1,1) PRIMARY KEY not null,
-	Ma_CTHD uniqueidentifier default newid() not null,
+	Ma_CTHD as 'CTHD' + cast(ID_CTHD as nvarchar(5)) persisted,
     id_hd INT NOT NULL,
     ID_Sach int not null,
     SoLuong int not null,
@@ -151,30 +153,11 @@ CREATE TABLE ChitietHoaDon(
 	FOREIGN KEY (id_hd) REFERENCES HoaDon(id_hd),
 	FOREIGN KEY (ID_Sach) REFERENCES Sach(ID_Sach)
 );
--- Tạo Bảng Thể Loại Sách
-CREATE TABLE TheLoaiSach(
-    ID_TLS int IDENTITY(1,1) PRIMARY KEY not null,
-    ID_Sach int not null,
-    ID_TL int not null,
-    MaTLS uniqueidentifier default newid() not null,
-    TrangThai int not null
-    FOREIGN KEY (ID_Sach) REFERENCES Sach(ID_Sach),
-	FOREIGN KEY (ID_TL) REFERENCES TheLoai(ID_TL)
-)
--- Tạo Tác Giả Sách
-CREATE TABLE TacGiaSach(
-    ID_TGS int IDENTITY(1,1) PRIMARY KEY Not null,
-    ID_Sach int not null,
-    id_TG int not null,
-    MaTGS uniqueidentifier default newid() not null,
-    TrangThai int not null,
-    FOREIGN KEY (ID_Sach) REFERENCES Sach(ID_Sach),
-	FOREIGN KEY (id_TG) REFERENCES TacGia(id_TG)
-)
+
 --Tạo Trạng Thái Thanh Toán
 CREATE TABLE PhuongThucThanhToan(
     ID_PTTT int IDENTITY(1,1) PRIMARY KEY Not null,
-    MaKieuGD uniqueidentifier default newid() not null,
+    MaKieuGD as 'KGD' + cast(ID_PTTT as nvarchar(5)) persisted,
     TenPT NVARCHAR(50) NOT NULL,
     TrangThai int not null
 )
@@ -183,7 +166,7 @@ CREATE TABLE NgonNguSach(
     ID_NNS int IDENTITY(1,1) PRIMARY KEY Not null,
     ID_NN int not null,
     ID_Sach int not null,
-    MaNNS uniqueidentifier default newid() not null,
+    MaNNS as 'NNS' + cast(ID_NNS as nvarchar(5)) persisted,
     TrangThai int not null
     FOREIGN KEY (ID_NN) REFERENCES NgonNguSanPham(ID_NN),
 	FOREIGN KEY (ID_Sach) REFERENCES Sach(ID_Sach)
@@ -193,7 +176,7 @@ CREATE TABLE HinhThucGiaoDich(
     ID_HTGD int IDENTITY(1,1) PRIMARY KEY Not null,
     ID_Hd int not null,
     ID_PTTT int not null,
-    MaGD uniqueidentifier default newid() not null,
+    MaGD as 'HTGD' + cast(ID_HTGD as nvarchar(5)) persisted,
     TienThanhToan int not null,
     TrangThai int not null
     FOREIGN KEY (ID_Hd) REFERENCES HoaDon(ID_Hd),
@@ -255,10 +238,10 @@ INSERT INTO MaGiamGia (Ma_GG, Mota, Giatri, NgayTao, NgayHetHan, SoLuong, DieuKi
     ('MG789', N'Giảm giá 10%', 10, GETDATE(), DATEADD(day, 60, GETDATE()), 200, 200000, 50000, 1);
 
 -- Thêm dữ liệu vào bảng HoaDon
-INSERT INTO HoaDon (ID_TK, ID_Kh, Ma_HD, TenNguoiMua, SDTNguoiMua, DiaChiNhanHang, NgayTao, NgayThanhToan, TongTienGoc, TongTienSauGiamGia, TrangThai) VALUES 
-    (2, 1, NEWID(), 'Nguyen Van A', '123456789', N'123 Đường ABC, Quận 1, TP.HCM', GETDATE(), GETDATE(), 1500000, 1200000, 1),
-    (3, 2, NEWID(), 'Tran Thi B', '987654321', N'456 Đường XYZ, Quận 2, TP.HCM', GETDATE(), GETDATE(), 2000000, 1600000, 1),
-    (1, 3, NEWID(), 'John Doe', '555555555', N'789 Đường LMN, Quận 3, TP.HCM', GETDATE(), GETDATE(), 1000000, 900000, 1);
+INSERT INTO HoaDon (ID_TK, ID_Kh, TenNguoiMua, SDTNguoiMua, NgayTao, NgayThanhToan, TongTienGoc, TongTienSauGiamGia, TrangThai) VALUES 
+    (2, 1, 'Nguyen Van A', '123456789', GETDATE(), GETDATE(), 1500000, 1200000, 1),
+    (3, 2, 'Tran Thi B', '987654321', GETDATE(), GETDATE(), 2000000, 1600000, 1),
+    (1, 3, 'John Doe', '555555555', GETDATE(), GETDATE(), 1000000, 900000, 1);
 
 -- Thêm dữ liệu vào bảng MaGiamGiaHoaDon
 INSERT INTO MaGiamGiaHoaDon (ID_Hd, ID_MGG, NgaySuDung, TrangThai) VALUES 
@@ -267,52 +250,42 @@ INSERT INTO MaGiamGiaHoaDon (ID_Hd, ID_MGG, NgaySuDung, TrangThai) VALUES
     (3, 3, GETDATE(), 1);
 
 -- Thêm dữ liệu vào bảng Sach
-INSERT INTO Sach (ID_KV, ID_NXB, Ma_SACH, TenSach, NamSanXuat, SoLuongSanPham, GiaSanPham, PhanDoan, SoTrang, MoTa, TrangThai) VALUES 
-    (1, 1, NEWID(), N'Sách 1', 2022, 100, 50000, N'Khoa học', 200, N'Sách mô tả về khoa học', 1),
-    (2, 2, NEWID(), N'Sách 2', 2021, 50, 80000, N'Văn hóa', 150, N'Sách mô tả về văn hóa', 1),
-    (3, 3, NEWID(), N'Sách 3', 2023, 200, 40000, N'Lịch sử', 180, N'Sách mô tả về lịch sử', 1);
+INSERT INTO Sach (ID_KV, ID_NXB,ID_TG,ID_TL ,TenSach, NamSanXuat, SoLuongSanPham, GiaSanPham, SoTrang, MoTa, TrangThai) VALUES 
+    (1, 1, 1,1,N'Sách 1', 2022, 100, 50000, 200, N'Sách mô tả về khoa học', 1),
+    (2, 2,2,2,N'Sách 2', 2021, 50, 80000, 150, N'Sách mô tả về văn hóa', 1),
+    (3, 3, 3,3,N'Sách 3', 2023, 200, 40000, 180, N'Sách mô tả về lịch sử', 1);
 
     -- Thêm dữ liệu vào bảng AnhSach
-INSERT INTO AnhSach (MA_ANH, id_Sach, TenAnh, TrangThai) VALUES 
-    (NEWID(), 1, 'anh_sach_1.jpg', 1),
-    (NEWID(), 2, 'anh_sach_2.jpg', 1),
-    (NEWID(), 3, 'anh_sach_3.jpg', 1);
+INSERT INTO AnhSach (id_Sach, TenAnh, TrangThai) VALUES 
+    (1, 'anh_sach_1.jpg', 1),
+    (2, 'anh_sach_2.jpg', 1),
+    (3, 'anh_sach_3.jpg', 1);
 
 -- Thêm dữ liệu vào bảng ChiTietHoaDon
-INSERT INTO ChitietHoaDon (Ma_CTHD, id_hd, ID_Sach, SoLuong, Gia, TrangThai) VALUES 
-    (NEWID(), 1, 1, 2, 100000, 1),
-    (NEWID(), 1, 2, 1, 150000, 1),
-    (NEWID(), 2, 3, 3, 80000, 1);
+INSERT INTO ChitietHoaDon (id_hd, ID_Sach, SoLuong, Gia, TrangThai) VALUES 
+    (1, 1, 2, 100000, 1),
+    (1, 2, 1, 150000, 1),
+    (2, 3, 3, 80000, 1);
 
--- Thêm dữ liệu vào bảng TheLoaiSach
-INSERT INTO TheLoaiSach (ID_Sach, ID_TL, MaTLS, TrangThai) VALUES 
-    (1, 1, NEWID(), 1),
-    (2, 2, NEWID(), 1),
-    (3, 3, NEWID(), 1);
-
--- Thêm dữ liệu vào bảng TacGiaSach
-INSERT INTO TacGiaSach (ID_Sach, id_TG, MaTGS, TrangThai) VALUES 
-    (1, 1, NEWID(), 1),
-    (2, 2, NEWID(), 1),
-    (3, 3, NEWID(), 1);
 
 -- Thêm dữ liệu vào bảng PhuongThucThanhToan
-INSERT INTO PhuongThucThanhToan (MaKieuGD, TenPT, TrangThai) VALUES 
-    (NEWID(), N'Thanh toán khi nhận hàng', 1),
-    (NEWID(), N'Thanh toán qua thẻ tín dụng', 1),
-    (NEWID(), N'Chuyển khoản ngân hàng', 1);
+INSERT INTO PhuongThucThanhToan (TenPT, TrangThai) VALUES 
+    (N'Thanh toán khi nhận hàng', 1),
+    (N'Thanh toán qua thẻ tín dụng', 1),
+    (N'Chuyển khoản ngân hàng', 1);
 
 -- Thêm dữ liệu vào bảng NgonNguSach
-INSERT INTO NgonNguSach (ID_NN, ID_Sach, MaNNS, TrangThai) VALUES 
-    (1, 1, NEWID(), 1),
-    (2, 2, NEWID(), 1),
-    (3, 3, NEWID(), 1);
+INSERT INTO NgonNguSach (ID_NN, ID_Sach	, TrangThai) VALUES 
+    (1, 1, 1),
+    (2, 2, 1),
+    (3, 3, 1)
+	--(1, 3, 1);
 
 -- Thêm dữ liệu vào bảng HinhThucGiaoDich
-INSERT INTO HinhThucGiaoDich (ID_Hd, ID_PTTT, MaGD, TienThanhToan, TrangThai) VALUES 
-    (1, 1, NEWID(), 1200000, 1),
-    (2, 2, NEWID(), 1600000, 1),
-    (3, 3, NEWID(), 900000, 1);
+INSERT INTO HinhThucGiaoDich (ID_Hd, ID_PTTT, TienThanhToan, TrangThai) VALUES 
+    (1, 1, 1200000, 1),
+    (2, 2, 1600000, 1),
+    (3, 3, 900000, 1);
     
 -- Truy vấn dữ liệu từ bảng ChucVu
 SELECT * FROM ChucVu;
@@ -356,11 +329,6 @@ SELECT * FROM AnhSach;
 -- Truy vấn dữ liệu từ bảng ChitietHoaDon
 SELECT * FROM ChitietHoaDon;
 
--- Truy vấn dữ liệu từ bảng TheLoaiSach
-SELECT * FROM TheLoaiSach;
-
--- Truy vấn dữ liệu từ bảng TacGiaSach
-SELECT * FROM TacGiaSach;
 
 -- Truy vấn dữ liệu từ bảng PhuongThucThanhToan
 SELECT * FROM PhuongThucThanhToan;
@@ -372,28 +340,25 @@ SELECT * FROM NgonNguSach;
 SELECT * FROM HinhThucGiaoDich;
 
 SELECT 
-    Sach.ID_Sach AS ID,
-	Sach.Ma_SACH AS MaSach,
-	Sach.TenSach AS TenSach,
-	Sach.NamSanXuat AS NamXuatBan,
-	Sach.SoLuongSanPham AS SoLuong,
-	Sach.GiaSanPham AS Gia,
-	Sach.PhanDoan AS PhanDoan,
-	Sach.SoTrang AS SoTrang,
-	Sach.MoTa AS MoTa,
-    NgonNguSanPham.TenNN AS NgonNgu,
-    TheLoai.Mota AS TheLoai,
+    Sach.Ma_SACH AS MaSach,
+    Sach.TenSach AS TenSach,
+    Sach.NamSanXuat AS NamXuatBan,
+    Sach.SoLuongSanPham AS SoLuong,
+    Sach.GiaSanPham AS Gia,
+    Sach.SoTrang AS SoTrang,
+    Sach.MoTa AS MoTa,
+	NgonNguSanPham.TenNN,
+	TheLoai.TenTL AS Theloai,
     NhaXuatBan.TenNXB AS NhaXuatBan,
-    TacGia.TenTG AS TacGia,
+    TacGia.TenTG,
     KhuVucLuuTru.TenKV AS KhuVucLuuTru,
-	Sach.TrangThai AS TrangThai
+    Sach.TrangThai AS TrangThai
 FROM Sach
     INNER JOIN NgonNguSach ON Sach.ID_Sach = NgonNguSach.ID_Sach
     INNER JOIN NgonNguSanPham ON NgonNguSach.ID_NN = NgonNguSanPham.ID_NN
-    INNER JOIN TheLoaiSach ON Sach.ID_Sach = TheLoaiSach.ID_Sach
-    INNER JOIN TheLoai ON TheLoaiSach.ID_TL = TheLoai.ID_TL
+    INNER JOIN TheLoai ON Sach.ID_TL = TheLoai.ID_TL
     INNER JOIN NhaXuatBan ON Sach.ID_NXB = NhaXuatBan.ID_NXB
-    INNER JOIN TacGiaSach ON Sach.ID_Sach = TacGiaSach.ID_Sach
-    INNER JOIN TacGia ON TacGiaSach.id_TG = TacGia.id_TG
+    INNER JOIN TacGia ON Sach.id_TG = TacGia.id_TG
     INNER JOIN KhuVucLuuTru ON Sach.ID_KV = KhuVucLuuTru.ID_KV
-WHERE Sach.ID_Sach = 1; -- Thay 1 bằng ID của cuốn sách bạn muốn truy vấn
+
+	
